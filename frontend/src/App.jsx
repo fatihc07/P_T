@@ -111,6 +111,65 @@ function App() {
     }
   };
 
+  const handleDeleteUser = async (username) => {
+    if (!confirm(`${username} kullanıcısını silmek istediğinize emin misiniz?`)) {
+      return;
+    }
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/users/${username}`, {
+        method: 'DELETE',
+      });
+      
+      if (response.ok) {
+        alert(`${username} kullanıcısı başarıyla silindi.`);
+        fetchUsers(); // Listeyi yenile
+        fetchAdminStats(); // İstatistikleri güncelle
+      } else {
+        const error = await response.json();
+        alert(`Hata: ${error.detail || 'Kullanıcı silinemedi'}`);
+      }
+    } catch (err) {
+      console.error("Delete user error:", err);
+      alert("Kullanıcı silinirken bir hata oluştu.");
+    }
+  };
+
+  const handleCreateUser = async (e) => {
+    e.preventDefault();
+    if (!newUsername || !newPassword) {
+      alert("Kullanıcı adı ve şifre gereklidir.");
+      return;
+    }
+    
+    try {
+      const response = await fetch(`${API_BASE_URL}/admin/create-user`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: newUsername,
+          password: newPassword,
+        }),
+      });
+      
+      if (response.ok) {
+        alert(`${newUsername} kullanıcısı başarıyla oluşturuldu.`);
+        setNewUsername('');
+        setNewPassword('');
+        fetchUsers(); // Listeyi yenile
+        fetchAdminStats(); // İstatistikleri güncelle
+      } else {
+        const error = await response.json();
+        alert(`Hata: ${error.detail || 'Kullanıcı oluşturulamadı'}`);
+      }
+    } catch (err) {
+      console.error("Create user error:", err);
+      alert("Kullanıcı oluşturulurken bir hata oluştu.");
+    }
+  };
+
   useEffect(() => {
     if (activeTab === 'Admin') {
       fetchUsers();
@@ -587,6 +646,7 @@ function App() {
                     <tr>
                       <th>KULLANICI ADI</th>
                       <th>YETKİ</th>
+                      <th>İŞLEM</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -597,6 +657,25 @@ function App() {
                           <span className="badge" style={{ color: uname === 'admin' ? 'var(--accent-color)' : 'white' }}>
                             {uname === 'admin' ? 'Admin' : 'Arkadaş'}
                           </span>
+                        </td>
+                        <td>
+                          {uname !== 'admin' && (
+                            <button 
+                              onClick={() => handleDeleteUser(uname)}
+                              style={{
+                                background: 'rgba(255, 77, 77, 0.2)',
+                                border: '1px solid rgba(255, 77, 77, 0.3)',
+                                color: '#ff4d4d',
+                                padding: '4px 12px',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                fontSize: '0.75rem',
+                                fontWeight: 'bold'
+                              }}
+                            >
+                              🗑️ Sil
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -1039,10 +1118,6 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
                   <div style={{ flex: 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                           <h1 style={{ fontSize: '3rem', margin: 0, lineHeight: 1, fontWeight: '900', color: 'var(--accent-color)' }}>{detail.symbol.replace('.IS', '')}</h1>
-                          <div style={{ display: 'flex', gap: '10px' }}>
-                              <button className="trade-btn buy">AL</button>
-                              <button className="trade-btn sell">SAT</button>
-                          </div>
                       </div>
                       <h2 style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', fontWeight: 'normal', margin: '12px 0' }}>{detail.name}</h2>
                        <div style={{ marginTop: '15px', display: 'flex', gap: '10px', flexWrap: 'wrap', alignItems: 'center' }}>

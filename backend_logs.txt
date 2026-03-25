@@ -188,3 +188,22 @@
 [2026-03-25 15:18:18] ✅ THYAO detayları gönderildi.
 [2026-03-25 15:18:18] 🔍 THYAO için detaylar istendi.
 [2026-03-25 15:18:18] ✅ THYAO detayları gönderildi.
+[2026-03-25 15:18:44] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:18:44] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-25 15:18:46] ✅ 15 hisse hazırlandı.
+[2026-03-25 15:18:47] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:18:47] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-25 15:18:48] ✅ 15 hisse hazırlandı.
+[2026-03-25 15:18:54] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:18:54] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-25 15:18:55] ✅ 15 hisse hazırlandı.
+[2026-03-25 15:19:52] 🔍 ZOREN için detaylar istendi.
+[2026-03-25 15:19:52] 📊 ZOREN için mali tablolar istendi.
+[2026-03-25 15:19:53] ✅ ZOREN detayları gönderildi.
+[2026-03-25 15:19:53] ✅ ZOREN mali tabloları hazır.
+[2026-03-25 15:28:36] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:28:36] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-25 15:28:37] ✅ 15 hisse hazırlandı.
+[2026-03-25 15:29:05] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:29:05] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-25 15:29:05] ✅ 15 hisse hazırlandı.

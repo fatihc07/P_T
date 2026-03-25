@@ -258,6 +258,26 @@ async def create_user(req: LoginRequest):
     
     return {"status": "success"}
 
+@app.delete("/admin/users/{username}")
+async def delete_user(username: str):
+    # Admin kullanıcısı silinemez
+    if username == "admin":
+        raise HTTPException(status_code=400, detail="Admin kullanıcısı silinemez")
+    
+    if username not in users_db:
+        raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
+    
+    # Kullanıcıyı sil
+    del users_db[username]
+    
+    # Veritabanına kaydet
+    try:
+        with open(USER_DB, "w", encoding="utf-8") as f:
+            json.dump(users_db, f, ensure_ascii=False, indent=2)
+    except: pass
+    
+    return {"status": "success", "message": f"{username} kullanıcısı silindi"}
+
 # --- Frontend Servis ---
 # main.py ile aynı yerdeki 'dist' klasörüne bak (nixpacks oraya kopyalıyor)
 current_dir = os.path.dirname(os.path.abspath(__file__))

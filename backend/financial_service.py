@@ -85,6 +85,16 @@ def get_sector_group(symbol):
 FINANCIAL_CACHE = load_json(FINANCIAL_CACHE_FILE)
 SECTORS_DATA = load_json(SECTORS_FILE)
 
+# Hisse detay ve geçmiş veriler için cache
+STOCK_CACHE_FILE = os.path.join(DATA_DIR, "stock_cache.json")
+STOCK_CACHE = load_json(STOCK_CACHE_FILE)
+
+def save_stock_cache(cache):
+    try:
+        with open(STOCK_CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(cache, f, ensure_ascii=False, indent=2)
+    except: pass
+
 # --- Varsayılan Hisse Listesi ---
 # sectors.json'dan çekelim veya yedek listeyi kullanalım
 if SECTORS_DATA:
@@ -144,7 +154,19 @@ def get_stock_data(symbol):
 def get_stock_details(symbol):
     """
     Hisse rasyolarını (F/K, PD/DD vb.) ve temel bilgilerini döner.
+    Cache kontrolü yapar, 24 saat içindeki verileri döndürür.
     """
+    clean_symbol = symbol.replace(".IS", "").upper()
+    
+    # Cache kontrolü - 24 saat geçerli
+    cache_key = f"{clean_symbol}_details"
+    if cache_key in STOCK_CACHE:
+        cached = STOCK_CACHE[cache_key]
+        last_updated = datetime.fromisoformat(cached.get("last_updated", "2000-01-01"))
+        if (datetime.now() - last_updated).hours < 24:
+            print(f"✅ {clean_symbol} detayları cache'den döndürüldü")
+            return cached
+    
     try:
         yf_symbol = symbol if symbol.endswith(".IS") else f"{symbol}.IS"
         ticker = yf.Ticker(yf_symbol)
@@ -167,7 +189,7 @@ def get_stock_details(symbol):
         pb = info.get("priceToBook")
         ebitda = info.get("enterpriseToEbitda")
         
-        return {
+        result = {
             "symbol": symbol.replace(".IS", ""),
             "name": info.get("longName", symbol),
             "price": price,
@@ -188,6 +210,13 @@ def get_stock_details(symbol):
             "last_updated": datetime.now().isoformat(),
             "calculation_source": "Yahoo Finance üzerinden hesaplanmıştır."
         }
+        
+        # Cache'e kaydet
+        STOCK_CACHE[cache_key] = result
+        save_stock_cache(STOCK_CACHE)
+        print(f"✅ {clean_symbol} detayları çekildi ve cache'e kaydedildi")
+        
+        return result
     except Exception as e:
         print(f"Details error ({symbol}): {e}")
         return {
@@ -251,7 +280,19 @@ def fetch_financials(symbol):
 def get_stock_history(symbol, period="1y"):
     """
     yfinance kullanarak geçmiş fiyat verilerini çeker.
+    Cache kontrolü yapar, 6 saat içindeki verileri döndürür.
     """
+    clean_symbol = symbol.replace(".IS", "").upper()
+    
+    # Cache kontrolü - 6 saat geçerli
+    cache_key = f"{clean_symbol}_history_{period}"
+    if cache_key in STOCK_CACHE:
+        cached = STOCK_CACHE[cache_key]
+        last_updated = datetime.fromisoformat(cached.get("last_updated", "2000-01-01"))
+        if (datetime.now() - last_updated).hours < 6:
+            print(f"✅ {clean_symbol} geçmişi cache'den döndürüldü")
+            return cached.get("data", [])
+    
     try:
         yf_symbol = symbol if symbol.endswith(".IS") else f"{symbol}.IS"
         ticker = yf.Ticker(yf_symbol)
@@ -290,6 +331,15 @@ def get_stock_history(symbol, period="1y"):
                 "MA200": round(row['MA200'], 2) if not pd.isna(row['MA200']) else None,
                 "RSI": round(row['RSI'], 2) if not pd.isna(row['RSI']) else None
             })
+        
+        # Cache'e kaydet
+        STOCK_CACHE[cache_key] = {
+            "data": data,
+            "last_updated": datetime.now().isoformat()
+        }
+        save_stock_cache(STOCK_CACHE)
+        print(f"✅ {clean_symbol} geçmişi çekildi ve cache'e kaydedildi")
+        
         return data
     except Exception as e:
         print(f"History error ({symbol}): {e}")
