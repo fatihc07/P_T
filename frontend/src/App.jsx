@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { supabase } from './supabaseClient';
 import './index.css';
 
 const APP_VERSION = 'v1.0.3'; // HER GÜNCELLEMEDE ARTIR
@@ -17,9 +18,10 @@ function App() {
   const [trackedSymbols, setTrackedSymbols] = useState([]); // Kullanıcının aradığı hisseler
   const [favoriteSymbols, setFavoriteSymbols] = useState([]); // Favori hisseler
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [authMode, setAuthMode] = useState('login'); // 'login' or 'signup'
   
   // Auth Form State
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [authError, setAuthError] = useState('');
 
@@ -31,36 +33,63 @@ function App() {
   const [cachedStocks, setCachedStocks] = useState([]);
   const [showCachedList, setShowCachedList] = useState(false);
 
+  // Supabase Auth Session
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setUser(session.user);
+        setIsLoggedIn(true);
+      }
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        setUser(session.user);
+        setIsLoggedIn(true);
+      } else {
+        setUser(null);
+        setIsLoggedIn(false);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
+    setAuthError('');
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
-      const data = await response.json();
-      if (data.status === 'success') {
-        setIsLoggedIn(true);
-        setUser(data.user);
-        localStorage.setItem('storedUser', data.user); // Oturumu kalıcı kaydet
-        setAuthError('');
-      } else {
-        setAuthError('Hatalı kullanıcı adı veya şifre');
-      }
+      if (error) throw error;
+      // Session handling will happen in onAuthStateChange
     } catch (err) {
-      setAuthError('Sunucu bağlantı hatası');
+      setAuthError(err.message || 'Giriş hatası');
     }
   };
 
-  // Sayfa Yenilendiğinde Oturumu Kontrol Et
-  useEffect(() => {
-    const storedUser = localStorage.getItem('storedUser');
-    if (storedUser) {
-        setUser(storedUser);
-        setIsLoggedIn(true);
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    setAuthError('');
+    try {
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+      });
+      if (error) throw error;
+      alert('Kayıt başarılı! Lütfen e-postanızı onaylayın (eğer açıksa) veya giriş yapın.');
+      setAuthMode('login');
+    } catch (err) {
+      setAuthError(err.message || 'Kayıt hatası');
     }
-  }, []);
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    localStorage.removeItem('storedUser');
+  };
 
   const fetchUsers = async () => {
     try {
@@ -268,38 +297,46 @@ function App() {
   };
 
 
-  // Favoriler Yükleme
+  // Favoriler Yükleme (Supabase)
   useEffect(() => {
     if (user) {
-      const savedFavs = localStorage.getItem(`favorite_symbols_${user}`);
-      if (savedFavs) {
-        try {
-          setFavoriteSymbols(JSON.parse(savedFavs));
-        } catch (e) {
-          console.error("Favoriler yüklenemedi", e);
-          setFavoriteSymbols([]);
+      const fetchFavorites = async () => {
+        const { data, error } = await supabase
+          .from('favorites')
+          .select('symbol')
+          .eq('user_id', user.id);
+        
+        if (!error && data) {
+          setFavoriteSymbols(data.map(f => f.symbol));
         }
-      }
+      };
+      fetchFavorites();
     }
   }, [user]);
 
-  // Favoriler Kaydetme
+  // Favoriler Kaydetme (Supabase'e taşındığı için gerek kalmadı ama boş bırakalım)
   useEffect(() => {
-    if (user) {
-      localStorage.setItem(`favorite_symbols_${user}`, JSON.stringify(favoriteSymbols));
-    }
+    // Supabase ile her toggle'da direkt DB'ye yazıyoruz.
   }, [favoriteSymbols, user]);
 
-  // Favori Ekle/Çıkar
-  const toggleFavorite = (symbol, e) => {
+  // Favori Ekle/Çıkar (Supabase)
+  const toggleFavorite = async (symbol, e) => {
     if(e) e.stopPropagation();
-    setFavoriteSymbols(prev => {
-      if (prev.includes(symbol)) {
-        return prev.filter(s => s !== symbol);
-      } else {
-        return [...prev, symbol];
-      }
-    });
+    if (!user) return;
+
+    if (favoriteSymbols.includes(symbol)) {
+      setFavoriteSymbols(prev => prev.filter(s => s !== symbol));
+      await supabase
+        .from('favorites')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('symbol', symbol);
+    } else {
+      setFavoriteSymbols(prev => [...prev, symbol]);
+      await supabase
+        .from('favorites')
+        .insert([{ user_id: user.id, symbol: symbol }]);
+    }
   };
 
   const getDisplayStocks = () => {
@@ -318,19 +355,18 @@ function App() {
     );
   };
 
-  // Kullanıcı değiştiğinde kayıtlı hisseleri yükle
+  // Kullanıcı değiştiğinde kayıtlı geçmişi yükle
   useEffect(() => {
+    // Takip edilen hisseler şimdilik local'de kalabilir veya ileride Supabase'e taşınabilir
     if (user) {
-      const saved = localStorage.getItem(`tracked_symbols_${user}`);
+      const storageKey = `tracked_symbols_${user.id || user}`;
+      const saved = localStorage.getItem(storageKey);
       if (saved) {
         try {
           setTrackedSymbols(JSON.parse(saved));
         } catch (e) {
-          console.error("Geçmiş yüklenemedi", e);
           setTrackedSymbols([]);
         }
-      } else {
-        setTrackedSymbols([]);
       }
     }
   }, [user]);
@@ -379,15 +415,16 @@ function App() {
             PhD TERMİNAL
             <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem', fontWeight: 'normal' }}>{APP_VERSION}</div>
           </div>
-          <form onSubmit={handleLogin}>
+          <form onSubmit={authMode === 'login' ? handleLogin : handleSignUp}>
             <div className="form-group">
-              <label>Kullanıcı Adı</label>
+              <label>E-posta</label>
               <input 
-                type="text" 
+                type="email" 
                 className="search-bar" 
                 style={{ width: '100%' }}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </div>
             <div className="form-group" style={{ marginTop: '1rem' }}>
@@ -398,10 +435,21 @@ function App() {
                 style={{ width: '100%' }}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </div>
-            {authError && <p style={{ color: 'var(--loss-color)', marginTop: '0.5rem' }}>{authError}</p>}
-            <button type="submit" className="login-btn">Giriş Yap</button>
+            {authError && <p style={{ color: 'var(--loss-color)', marginTop: '0.5rem', fontSize: '0.8rem' }}>{authError}</p>}
+            <button type="submit" className="login-btn">
+              {authMode === 'login' ? 'Giriş Yap' : 'Kayıt Ol'}
+            </button>
+            
+            <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem' }}>
+              {authMode === 'login' ? (
+                <p>Hesabınız yok mu? <span onClick={() => setAuthMode('signup')} style={{ color: 'var(--accent-color)', cursor: 'pointer' }}>Kayıt Olun</span></p>
+              ) : (
+                <p>Zaten hesabınız var mı? <span onClick={() => setAuthMode('login')} style={{ color: 'var(--accent-color)', cursor: 'pointer' }}>Giriş Yapın</span></p>
+              )}
+            </div>
           </form>
         </div>
       </div>
@@ -459,7 +507,7 @@ function App() {
                 <span>Admin Paneli</span>
               </li>
             )}
-            <li className="nav-item" onClick={() => { setIsLoggedIn(false); localStorage.removeItem('storedUser'); }}>
+            <li className="nav-item" onClick={handleLogout}>
                <i className="nav-icon">🚪</i>
                <span>Çıkış Yap</span>
             </li>
@@ -473,7 +521,7 @@ function App() {
           {Array.isArray(onlineUsers) && onlineUsers.map(u => (
             <div key={u} className="online-user-item">
               <span className="online-dot shine"></span>
-              <span className="online-name">{u}</span>
+              <span className="online-name" title={u}>{u.split('@')[0]}</span>
             </div>
           ))}
         </div>
@@ -588,7 +636,7 @@ function App() {
             ) : (
             <>
             <header>
-              <h1>Hoş geldin, {user}</h1>
+              <h1>Hoş geldin, {user.email?.split('@')[0]}</h1>
               <div className="search-container" style={{ position: 'relative', width: '100%', maxWidth: '600px', zIndex: 50 }}>
                 <div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
                   <input 

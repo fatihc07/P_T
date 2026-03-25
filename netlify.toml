@@ -1,0 +1,16 @@
+[build]
+  # Netlify frontend klasörüne girmeli ve build almalı
+  base = "frontend"
+  command = "npm install && npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Vite için production build ayarı
+  NODE_VERSION = "18"
+
+[[redirects]]
+  # React Router (SPA) için tüm istekleri index.html'e yönlendir
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
