@@ -4,12 +4,24 @@ import threading
 import time
 from datetime import datetime
 from typing import List, Optional
+from concurrent.futures import ThreadPoolExecutor
+import yfinance as yf
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+
+# --- Loglama Sistemi ---
+def log_to_file(message):
+    try:
+        with open("backend_logs.txt", "a", encoding="utf-8") as f:
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            f.write(f"[{timestamp}] {message}\n")
+    except: pass
+
+log_to_file("🚀 Backend baslatildi.")
 
 # ÖNEMLİ: Kendi servisimizden import ediyoruz
 try:
@@ -19,7 +31,8 @@ try:
         get_stock_details, 
         get_stock_financials,
         get_stock_history,
-        get_brokerage_data
+        get_brokerage_data,
+        get_sector_group
     )
 except ImportError:
     from backend.financial_service import (
@@ -28,7 +41,8 @@ except ImportError:
         get_stock_details, 
         get_stock_financials,
         get_stock_history,
-        get_brokerage_data
+        get_brokerage_data,
+        get_sector_group
     )
 
 app = FastAPI(title="PhD Terminal API")
@@ -74,64 +88,85 @@ async def login(req: LoginRequest):
 
 @app.get("/stocks")
 async def get_stocks(page: int = 1, limit: int = 20):
+    log_to_file(f"📋 Hisse listesi istendi (Sayfa: {page}, Limit: {limit})")
     all_stocks = get_all_bist_stocks()
     start = (page - 1) * limit
     end = start + limit
-    
     current_page_stocks = all_stocks[start:end]
     
-    # Her bir hisse için fiyat verilerini çek ve listeye ekle
-    enriched_stocks = []
-    for s in current_page_stocks:
-        symbol = s["symbol"]
-        data = get_stock_data(symbol)
-        if data:
-            # Mevcut bilgilerin üzerine fiyat, değişim vb. verileri birleştir
-            enriched_item = {
-                "symbol": symbol,
-                "name": s.get("name", symbol),
-                "price": data.get("price"),
-                "change": data.get("change"),
-                "changePercent": data.get("changePercent"),
-                "open": data.get("open"),
-                "volume": data.get("volume"),
-                "sector_group": s.get("sector_group", "Diğer")
-            }
-            enriched_stocks.append(enriched_item)
-        else:
-            # Veri çekilemezse orijinal halini bırak
-            enriched_stocks.append(s)
+    log_to_file(f"🔄 {len(current_page_stocks)} hisse zenginleştiriliyor...")
+    
+    # Hisse verilerini paralel olarak çekelim ki sayfa hızlı yüklensin
+    def enrich(s):
+        try:
+            symbol = s["symbol"]
+            data = get_stock_data(symbol)
+            if data:
+                return {
+                    "symbol": symbol,
+                    "name": s.get("name", symbol),
+                    "price": data.get("price"),
+                    "change": data.get("change"),
+                    "changePercent": data.get("changePercent"),
+                    "open": data.get("open"),
+                    "volume": data.get("volume"),
+                    "sector_group": get_sector_group(symbol)
+                }
+        except Exception as e:
+            log_to_file(f"⚠️ {s['symbol']} zenginleştirme hatası: {e}")
+        return s
 
+    num_workers = max(1, min(len(current_page_stocks), 15))
+    try:
+        with ThreadPoolExecutor(max_workers=num_workers) as executor:
+            enriched_stocks = list(executor.map(enrich, current_page_stocks))
+    except Exception as e:
+        log_to_file(f"🔥 ThreadPool hatası: {e}")
+        enriched_stocks = current_page_stocks
+
+    log_to_file(f"✅ {len(enriched_stocks)} hisse hazırlandı.")
     return {
         "items": enriched_stocks,
         "has_more": end < len(all_stocks)
     }
 
 @app.get("/stocks/{symbol}/detail")
-async def get_details_only(symbol: str):
+def get_details_only(symbol: str):
+    log_to_file(f"🔍 {symbol} için detaylar istendi.")
     data = get_stock_details(symbol)
     if not data:
+        log_to_file(f"❌ {symbol} detayları bulunamadı.")
         raise HTTPException(status_code=404, detail="Hisse bulunamadı")
+    log_to_file(f"✅ {symbol} detayları gönderildi.")
     return data
 
 @app.get("/stocks/{symbol}/financials")
-async def get_financials_only(symbol: str):
+def get_financials_only(symbol: str):
+    log_to_file(f"📊 {symbol} için mali tablolar istendi.")
     data = get_stock_financials(symbol)
     if not data:
-        return {"data": [], "periods": [], "last_updated": None}
+        log_to_file(f"⚠️ {symbol} mali tabloları ÇEKİLEMEDİ.")
+        # Frontend'in financials ? checkini geçmesi için null yerine boş ama geçerli yapı dönelim
+        return {"data": [], "periods": [], "last_updated": None, "status": "error"}
+    log_to_file(f"✅ {symbol} mali tabloları hazır.")
     return data
 
 @app.get("/stocks/{symbol}/history")
-async def get_history_only(symbol: str, period: str = "1y"):
-    return get_stock_history(symbol, period)
+def get_history_only(symbol: str, period: str = "1y"):
+    print(f"📈 {symbol} için {period} sürelik geçmiş veri isteniyor...")
+    hist = get_stock_history(symbol, period)
+    print(f"✅ {symbol} geçmiş verisi ({len(hist)} kayıt) alındı.")
+    return hist
 
 @app.get("/stocks/{symbol}/brokerage")
-async def get_brokerage_only(symbol: str):
+def get_brokerage_only(symbol: str):
+    print(f"🔄 {symbol} için takas verisi isteniyor...")
     return get_brokerage_data(symbol)
 
 @app.get("/stocks/{symbol}")
-async def get_details(symbol: str):
+def get_details(symbol: str):
     # Geriye uyumluluk için hepsini birden dönen endpoint
+    print(f"📡 {symbol} için tüm veriler (paket) isteniyor...")
     return {
         "symbol": symbol,
         "price_data": get_stock_data(symbol),
@@ -140,10 +175,29 @@ async def get_details(symbol: str):
     }
 
 @app.get("/search/suggestions")
-async def suggestions(q: str):
+def suggestions(q: str):
     all_stocks = get_all_bist_stocks()
     q = q.upper()
-    return [s for s in all_stocks if q in s["symbol"] or q in s["name"].upper()][:10]
+    
+    # Kendi listemizden ara
+    local_results = [s for s in all_stocks if q in s["symbol"] or q in s["name"].upper()]
+    
+    # Eğer sonuç azsa veya yoksa Yahoo'dan ara
+    if len(local_results) < 5:
+        try:
+            # Arama sonucunu daraltmak için '.IS' ekleyebiliriz veya genel arama yapıp temizleyebiliriz
+            search_res = yf.Search(q, max_results=8).quotes
+            for quote in search_res:
+                symbol = quote.get('symbol', '').replace('.IS', '')
+                # Mükerrer olmasın
+                if not any(r['symbol'] == symbol for r in local_results):
+                    local_results.append({
+                        "symbol": symbol,
+                        "name": quote.get('shortname', quote.get('longname', symbol))
+                    })
+        except: pass
+        
+    return local_results[:12]
 
 @app.get("/heartbeat")
 async def heartbeat():

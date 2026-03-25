@@ -39,6 +39,49 @@ def load_json(path):
             return {}
     return {}
 
+# --- BIST Sektör Eşleşmeleri ---
+SECTOR_MAPPING = {
+    # Bankacılık & Finans
+    "AKBNK": "Bankacılık", "GARAN": "Bankacılık", "ISCTR": "Bankacılık", "YKBNK": "Bankacılık", 
+    "VAKBN": "Bankacılık", "HALKB": "Bankacılık", "TSKB": "Bankacılık", "SKBNK": "Bankacılık",
+    "ALARK": "Holding", "KCHOL": "Holding", "SAHOL": "Holding", "SISE": "Sanayi",
+    
+    # Teknoloji & Savunma
+    "ASELS": "Savunma & Teknoloji", "SDTTR": "Savunma & Teknoloji", "MIATK": "Teknoloji", 
+    "SMRTG": "Enerji", "YEOTK": "Enerji", "KONTROL": "Teknoloji", "REEDR": "Teknoloji",
+    
+    # Ulaşım & Gıda
+    "THYAO": "Ulaşım", "PGSUS": "Ulaşım", "TAVHL": "Ulaşım",
+    "BIMAS": "Gıda Perakende", "SOKM": "Gıda Perakende", "MGROS": "Gıda Perakende",
+    "ULKER": "Gıda & İçecek", "CCOLA": "Gıda & İçecek", "AEFES": "Gıda & İçecek",
+    
+    # Demir Çelik & Enerji
+    "EREGL": "Demir Çelik", "KRDMD": "Demir Çelik", "TUPRS": "Rafineri & Enerji",
+    "PETKM": "Petrokimya", "SASA": "Tekstil & Kimya", "HEKTS": "Tarım & Kimya",
+    "ENJSA": "Enerji", "AKSEN": "Enerji", "ZOREN": "Enerji", "ODAS": "Enerji"
+}
+
+def get_sector_group(symbol):
+    clean_symbol = symbol.replace(".IS", "").upper()
+    
+    # 1. Hardcoded mapping önceliği
+    if clean_symbol in SECTOR_MAPPING:
+        return SECTOR_MAPPING[clean_symbol]
+    
+    # 2. sectors.json'dan bak
+    if clean_symbol + ".IS" in SECTORS_DATA:
+        sec = SECTORS_DATA[clean_symbol + ".IS"].get("sector", "Diğer")
+        # İngilizce gelirse çevir
+        mapping = {
+            "Financial Services": "Finansal Hizmetler",
+            "Energy": "Enerji", "Technology": "Teknoloji", 
+            "Industrials": "Sanayi", "Consumer Defensive": "Tüketim", 
+            "Basic Materials": "Temel Maddeler", "Communication Services": "İletişim"
+        }
+        return mapping.get(sec, sec)
+        
+    return "Diğer"
+
 FINANCIAL_CACHE = load_json(FINANCIAL_CACHE_FILE)
 SECTORS_DATA = load_json(SECTORS_FILE)
 
@@ -120,6 +163,10 @@ def get_stock_details(symbol):
                 change = price - prev
                 change_percent = (change / prev) * 100
 
+        pe = info.get("trailingPE")
+        pb = info.get("priceToBook")
+        ebitda = info.get("enterpriseToEbitda")
+        
         return {
             "symbol": symbol.replace(".IS", ""),
             "name": info.get("longName", symbol),
@@ -131,9 +178,9 @@ def get_stock_details(symbol):
             "description": info.get("longBusinessSummary", ""),
             "website": info.get("website", ""),
             "marketCap": info.get("marketCap"),
-            "peRatio": info.get("trailingPE") or "-",
-            "pd_dd": info.get("priceToBook") or "-",
-            "fd_favok": info.get("enterpriseToEbitda") or "-",
+            "peRatio": round(pe, 2) if pe is not None and not pd.isna(pe) else "-",
+            "pd_dd": round(pb, 2) if pb is not None and not pd.isna(pb) else "-",
+            "fd_favok": round(ebitda, 2) if ebitda is not None and not pd.isna(ebitda) else "-",
             "netDebt": info.get("totalDebt", 0) - info.get("totalCash", 0),
             "floatShares": info.get("floatShares"),
             "sharesOutstanding": info.get("sharesOutstanding"),
@@ -155,17 +202,45 @@ def fetch_financials(symbol):
         return None
     symbol = symbol.upper().replace(".IS", "")
     try:
-        curr_year = datetime.now().year
-        df = isy_fetch(symbols=symbol, start_year=str(curr_year-3), end_year=str(curr_year), exchange='TRY')
-        if df is None or df.empty: return None
+        # 2026 henüz gelmemiş olabilir, en son 2025 verisi vardır.
+        # Bu yüzden end_year'ı sabitleyelim veya kontrol edelim.
+        target_end = min(2025, datetime.now().year)
+        target_start = target_end - 4
+        
+        print(f"📥 {symbol} mali tabloları İş Yatırım'dan çekiliyor ({target_start}-{target_end})...")
+        df = isy_fetch(symbols=symbol, start_year=str(target_start), end_year=str(target_end), exchange='TRY')
+        
+        if df is None or df.empty:
+            print(f"⚠️ {symbol} için veri dönmedi (Boş DataFrame).")
+            return None
         
         period_cols = [c for c in df.columns if '/' in c]
+        period_cols.reverse() # En yeni dönemleri en başa al
+        
         all_data = []
         for _, row in df.iterrows():
-            item = {"code": row.get("FINANCIAL_ITEM_CODE"), "label": row.get("FINANCIAL_ITEM_NAME_TR"), "values": {}}
-            for p in period_cols: item["values"][p] = row.get(p)
+            code = row.get("FINANCIAL_ITEM_CODE")
+            label = row.get("FINANCIAL_ITEM_NAME_TR")
+            
+            # Code ve label NaN gelirse temizleyelim
+            item = {
+                "code": code if not pd.isna(code) else "-",
+                "label": label if not pd.isna(label) else "-",
+                "values": {}
+            }
+            
+            for p in period_cols: 
+                val = row.get(p)
+                # JSON serializasyonu için NaN değerlerini None (null) yapalım
+                if pd.isna(val):
+                    item["values"][p] = None
+                else:
+                    # Bazen sayılar string gelebiliyor, sayıya çevirmeyi deneyelim
+                    # ama nan kontrolünden geçmiş olmalı
+                    item["values"][p] = val
             all_data.append(item)
             
+        print(f"✅ {symbol} için mali tablolar başarıyla çekildi. Dönemler: {period_cols[:4]}")
         res = {"last_updated": datetime.now().isoformat(), "data": all_data, "periods": period_cols}
         FINANCIAL_CACHE[symbol] = res
         save_financial_cache(FINANCIAL_CACHE)
@@ -199,12 +274,16 @@ def get_stock_history(symbol, period="1y"):
         hist['RSI'] = 100 - (100 / (1 + rs))
 
         for date, row in hist.iterrows():
+            # Eksik verisi olan satırları atlayalım, grafiği bozmasın
+            if pd.isna(row['Open']) or pd.isna(row['High']) or pd.isna(row['Low']) or pd.isna(row['Close']):
+                continue
+                
             data.append({
                 "Date": date.strftime("%Y-%m-%d"),
-                "Open": round(row['Open'], 2) if not pd.isna(row['Open']) else None,
-                "High": round(row['High'], 2) if not pd.isna(row['High']) else None,
-                "Low": round(row['Low'], 2) if not pd.isna(row['Low']) else None,
-                "Close": round(row['Close'], 2) if not pd.isna(row['Close']) else None,
+                "Open": round(row['Open'], 2),
+                "High": round(row['High'], 2),
+                "Low": round(row['Low'], 2),
+                "Close": round(row['Close'], 2),
                 "Volume": int(row['Volume']) if not pd.isna(row['Volume']) else 0,
                 "MA20": round(row['MA20'], 2) if not pd.isna(row['MA20']) else None,
                 "MA50": round(row['MA50'], 2) if not pd.isna(row['MA50']) else None,

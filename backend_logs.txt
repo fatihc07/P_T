@@ -1,0 +1,161 @@
+[2026-03-25 14:43:05] 🚀 Backend baslatildi.
+[2026-03-25 14:43:14] 🔍 KCHOL için detaylar istendi.
+[2026-03-25 14:43:14] 📊 KCHOL için mali tablolar istendi.
+[2026-03-25 14:43:14] ✅ KCHOL mali tabloları hazır.
+[2026-03-25 14:43:14] 📊 KCHOL için mali tablolar istendi.
+[2026-03-25 14:43:14] ✅ KCHOL mali tabloları hazır.
+[2026-03-25 14:43:14] 📊 KCHOL için mali tablolar istendi.
+[2026-03-25 14:43:14] ✅ KCHOL mali tabloları hazır.
+[2026-03-25 14:43:15] ✅ KCHOL detayları gönderildi.
+[2026-03-25 14:43:15] 🔍 KCHOL için detaylar istendi.
+[2026-03-25 14:43:15] ✅ KCHOL detayları gönderildi.
+[2026-03-25 14:43:36] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:43:36] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:43:36] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:43:36] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:43:36] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:43:36] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:43:36] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:43:36] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:43:36] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:43:36] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:43:46] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:43:46] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:43:46] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:43:46] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:43:46] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:43:46] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:43:46] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:43:46] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:43:46] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:43:47] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:44:14] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:44:14] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:44:14] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:44:14] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:44:14] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:44:14] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:44:14] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:44:15] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:44:15] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:44:15] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:44:47] 🚀 Backend baslatildi.
+[2026-03-25 14:44:59] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:44:59] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:44:59] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:44:59] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:44:59] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:44:59] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:44:59] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:45:00] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:45:00] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:45:00] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:45:16] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:45:16] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:45:16] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:45:16] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:45:16] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:45:16] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:45:16] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:45:17] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:45:17] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:45:17] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:46:11] 🚀 Backend baslatildi.
+[2026-03-25 14:46:20] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:46:20] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:46:21] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:46:21] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:46:21] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:46:21] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:46:21] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:46:22] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:46:49] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:46:49] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:46:49] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:46:49] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 14:46:49] ✅ THYAO mali tabloları hazır.
+[2026-03-25 14:46:50] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:46:50] 🔍 THYAO için detaylar istendi.
+[2026-03-25 14:46:50] ✅ THYAO detayları gönderildi.
+[2026-03-25 14:47:44] 🚀 Backend baslatildi.
+[2026-03-25 14:47:53] 📊 KCHOL için mali tablolar istendi.
+[2026-03-25 14:47:53] 🔍 KCHOL için detaylar istendi.
+[2026-03-25 14:47:54] ✅ KCHOL detayları gönderildi.
+[2026-03-25 14:47:54] 🔍 KCHOL için detaylar istendi.
+[2026-03-25 14:47:54] ✅ KCHOL mali tabloları hazır.
+[2026-03-25 14:47:54] 📊 KCHOL için mali tablolar istendi.
+[2026-03-25 14:47:54] ✅ KCHOL mali tabloları hazır.
+[2026-03-25 14:47:54] ✅ KCHOL detayları gönderildi.
+[2026-03-25 14:48:54] 🔍 GARAN için detaylar istendi.
+[2026-03-25 14:48:54] 📊 GARAN için mali tablolar istendi.
+[2026-03-25 14:48:55] ✅ GARAN detayları gönderildi.
+[2026-03-25 14:48:55] 🔍 GARAN için detaylar istendi.
+[2026-03-25 14:48:56] ⚠️ GARAN mali tabloları ÇEKİLEMEDİ.
+[2026-03-25 14:48:56] 📊 GARAN için mali tablolar istendi.
+[2026-03-25 14:48:58] ⚠️ GARAN mali tabloları ÇEKİLEMEDİ.
+[2026-03-25 14:48:58] ✅ GARAN detayları gönderildi.
+[2026-03-25 15:02:20] 🚀 Backend baslatildi.
+[2026-03-25 15:02:34] 🔍 THY için detaylar istendi.
+[2026-03-25 15:02:34] 📊 THY için mali tablolar istendi.
+[2026-03-25 15:02:35] ⚠️ THY mali tabloları ÇEKİLEMEDİ.
+[2026-03-25 15:02:35] 📊 THY için mali tablolar istendi.
+[2026-03-25 15:02:36] ✅ THY detayları gönderildi.
+[2026-03-25 15:02:36] 🔍 THY için detaylar istendi.
+[2026-03-25 15:02:36] ⚠️ THY mali tabloları ÇEKİLEMEDİ.
+[2026-03-25 15:02:37] ✅ THY detayları gönderildi.
+[2026-03-25 15:04:03] 🚀 Backend baslatildi.
+[2026-03-25 15:04:08] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:04:08] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:04:08] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:04:18] 🔍 TH için detaylar istendi.
+[2026-03-25 15:04:18] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:04:18] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:04:18] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:04:18] 📊 TH için mali tablolar istendi.
+[2026-03-25 15:04:19] ⚠️ TH mali tabloları ÇEKİLEMEDİ.
+[2026-03-25 15:04:19] 📊 TH için mali tablolar istendi.
+[2026-03-25 15:04:19] ✅ TH detayları gönderildi.
+[2026-03-25 15:04:19] 🔍 TH için detaylar istendi.
+[2026-03-25 15:04:20] ⚠️ TH mali tabloları ÇEKİLEMEDİ.
+[2026-03-25 15:04:21] ✅ TH detayları gönderildi.
+[2026-03-25 15:04:44] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:04:44] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:04:44] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:04:44] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:04:44] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:04:44] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:04:44] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:04:44] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:04:44] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:04:44] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:04:44] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:04:44] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:04:54] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:04:54] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:04:54] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:05:31] 🚀 Backend baslatildi.
+[2026-03-25 15:05:36] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:05:36] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:05:36] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:05:41] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:05:41] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:05:41] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:05:51] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:05:51] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:05:51] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:06:07] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:06:07] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:06:07] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:11:39] 🚀 Backend baslatildi.
+[2026-03-25 15:11:44] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:11:44] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:11:44] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:11:53] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:11:53] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:11:53] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:12:04] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:12:04] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:12:04] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:12:30] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:12:30] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:12:30] ✅ 0 hisse hazırlandı.
