@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.pytest_cache/
+
+# Node (Frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/.DS_Store
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project Specific
+backend.log
+backend/financial_cache.json
+backend/stock_details_cache.json
+backend/sectors.json
+backend/users.json
+venv/
+.env

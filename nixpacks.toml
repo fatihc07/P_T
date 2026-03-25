@@ -1,0 +1,20 @@
+[phases.setup]
+nixPkgs = ["python3", "nodejs-18_x"]
+
+[phases.install]
+cmds = [
+    "pip install -r backend/requirements.txt",
+    "cd frontend && npm install"
+]
+
+[phases.build]
+cmds = [
+    "cd frontend && npm run build",
+    # Frontend çıktılarını backend klasörüne gömüyoruz ki ana main.py bulabilsin
+    "mkdir -p backend/dist",
+    "cp -r frontend/dist/* backend/dist/",
+    "ls -la backend/dist" 
+]
+
+[start]
+cmd = "python3 main.py"
