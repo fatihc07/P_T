@@ -4,6 +4,7 @@ import './index.css';
 
 const APP_VERSION = 'v1.0.3'; // HER GÜNCELLEMEDE ARTIR
 const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "" : `http://${window.location.hostname}:8000`);
+const ADMIN_EMAIL = 'admin@admin.com'; // Burayi kendi e-postanla degistirebilirsin
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -501,7 +502,7 @@ function App() {
               <i className="nav-icon">🏭</i>
               <span>Sektör analizi</span>
             </li>
-            {user === 'admin' && (
+            {user?.email === ADMIN_EMAIL && (
               <li className={`nav-item ${activeTab === 'Admin' ? 'active' : ''}`} onClick={() => setActiveTab('Admin')}>
                 <i className="nav-icon">⚙️</i>
                 <span>Admin Paneli</span>
@@ -528,7 +529,7 @@ function App() {
       </div>
 
       <main className="main-content">
-        {activeTab === 'Admin' && user === 'admin' ? (
+        {activeTab === 'Admin' && user?.email === ADMIN_EMAIL ? (
           <div className="admin-view">
             <h1>Admin Paneli</h1>
             <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>Kayıtlı kullanıcıları yönetin ve yenilerini ekleyin.</p>
