@@ -74,8 +74,33 @@ async def get_stocks(page: int = 1, limit: int = 20):
     all_stocks = get_all_bist_stocks()
     start = (page - 1) * limit
     end = start + limit
+    
+    current_page_stocks = all_stocks[start:end]
+    
+    # Her bir hisse için fiyat verilerini çek ve listeye ekle
+    enriched_stocks = []
+    for s in current_page_stocks:
+        symbol = s["symbol"]
+        data = get_stock_data(symbol)
+        if data:
+            # Mevcut bilgilerin üzerine fiyat, değişim vb. verileri birleştir
+            enriched_item = {
+                "symbol": symbol,
+                "name": s.get("name", symbol),
+                "price": data.get("price"),
+                "change": data.get("change"),
+                "changePercent": data.get("changePercent"),
+                "open": data.get("open"),
+                "volume": data.get("volume"),
+                "sector_group": s.get("sector_group", "Diğer")
+            }
+            enriched_stocks.append(enriched_item)
+        else:
+            # Veri çekilemezse orijinal halini bırak
+            enriched_stocks.append(s)
+
     return {
-        "items": all_stocks[start:end],
+        "items": enriched_stocks,
         "has_more": end < len(all_stocks)
     }
 

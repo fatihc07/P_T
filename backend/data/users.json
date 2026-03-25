@@ -1,0 +1,18 @@
+{
+  "admin": {
+    "password": "admin",
+    "role": "admin"
+  },
+  "mustafa": {
+    "password": "123456",
+    "role": "user"
+  },
+  "mustafa@pd.com": {
+    "password": "123456",
+    "role": "user"
+  },
+  "mustafa@pd.com.tr": {
+    "password": "111111",
+    "role": "user"
+  }
+}

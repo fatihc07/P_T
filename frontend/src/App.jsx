@@ -143,28 +143,6 @@ function App() {
     }
   };
 
-  const handleCreateUser = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch(`${API_BASE_URL}/admin/create-user`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: newUsername, password: newPassword })
-      });
-      
-      if (response.ok) {
-        alert('Kullanıcı oluşturuldu!');
-        setNewUsername('');
-        setNewPassword('');
-        fetchUsers();
-      } else {
-        alert('Kullanıcı oluşturulamadı. Lütfen sunucunun güncel olduğundan emin olun.');
-      }
-    } catch (err) {
-      alert('Sunucu hatası oluştu');
-    }
-  };
-
   useEffect(() => {
     if (!isLoggedIn || !user) return;
     

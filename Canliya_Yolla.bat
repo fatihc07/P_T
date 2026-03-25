@@ -1,5 +1,5 @@
 @echo off
-TITLE PhD Terminal - Canliya Gonderiliyor
+TITLE PhD Terminal - Canliya Gonderiliyor (GITHUB)
 echo.
 echo  =========================================
 echo    DEGISIKLIKLER CANLIYA GONDERILIYOR...
@@ -9,11 +9,11 @@ echo.
 :: Değişiklikleri ekle
 git add .
 
-:: Commit mesajı sor (veya otomatik at)
+:: Kullanıcıdan commit mesajı sor
 set /p msg="Ne degistirdin? (Opsiyonel): "
 if "%msg%"=="" set msg="Hizli guncelleme (%date% %time%)"
 
-:: Commit ve Push
+:: Commit ve Push (Her şey GitHub'a oradan Canlıya)
 git commit -m "%msg%"
 git push origin main
 
