@@ -107,20 +107,48 @@ def get_stock_details(symbol):
         ticker = yf.Ticker(yf_symbol)
         info = ticker.info
         
+        # Fiyat ve değişim verilerini de ekleyelim (tek seferde çekilmesi için)
+        hist = ticker.history(period="2d")
+        price = 0
+        change = 0
+        change_percent = 0
+        if not hist.empty:
+            latest = hist.iloc[-1]
+            price = round(latest['Close'], 2)
+            if len(hist) > 1:
+                prev = hist.iloc[-2]['Close']
+                change = price - prev
+                change_percent = (change / prev) * 100
+
         return {
+            "symbol": symbol.replace(".IS", ""),
             "name": info.get("longName", symbol),
+            "price": price,
+            "change": round(change, 2),
+            "changePercent": round(change_percent, 2),
             "sector": info.get("sector", SECTORS_DATA.get(symbol, "Bilinmiyor")),
+            "industry": info.get("industry", ""),
             "description": info.get("longBusinessSummary", ""),
-            "ratios": {
-                "pe": info.get("trailingPE"),
-                "pb": info.get("priceToBook"),
-                "ebitda": info.get("enterpriseToEbitda"),
-                "marketCap": info.get("marketCap"),
-                "dividendYield": info.get("dividendYield", 0) * 100 if info.get("dividendYield") else None
-            }
+            "website": info.get("website", ""),
+            "marketCap": info.get("marketCap"),
+            "peRatio": info.get("trailingPE") or "-",
+            "pd_dd": info.get("priceToBook") or "-",
+            "fd_favok": info.get("enterpriseToEbitda") or "-",
+            "netDebt": info.get("totalDebt", 0) - info.get("totalCash", 0),
+            "floatShares": info.get("floatShares"),
+            "sharesOutstanding": info.get("sharesOutstanding"),
+            "tv_symbol": f"BIST:{symbol.replace('.IS', '')}",
+            "last_updated": datetime.now().isoformat(),
+            "calculation_source": "Yahoo Finance üzerinden hesaplanmıştır."
         }
-    except:
-        return {"sector": SECTORS_DATA.get(symbol, "Bilinmiyor")}
+    except Exception as e:
+        print(f"Details error ({symbol}): {e}")
+        return {
+            "symbol": symbol,
+            "sector": SECTORS_DATA.get(symbol, "Bilinmiyor"),
+            "peRatio": "-",
+            "pd_dd": "-"
+        }
 
 def fetch_financials(symbol):
     if not isy_fetch:
@@ -144,6 +172,72 @@ def fetch_financials(symbol):
         return res
     except:
         return None
+
+def get_stock_history(symbol, period="1y"):
+    """
+    yfinance kullanarak geçmiş fiyat verilerini çeker.
+    """
+    try:
+        yf_symbol = symbol if symbol.endswith(".IS") else f"{symbol}.IS"
+        ticker = yf.Ticker(yf_symbol)
+        hist = ticker.history(period=period)
+        
+        if hist.empty:
+            return []
+            
+        data = []
+        # MA'ları hesapla
+        hist['MA20'] = hist['Close'].rolling(window=20).mean()
+        hist['MA50'] = hist['Close'].rolling(window=50).mean()
+        hist['MA200'] = hist['Close'].rolling(window=200).mean()
+        
+        # RSI hesapla (Basit)
+        delta = hist['Close'].diff()
+        gain = (delta.where(delta > 0, 0)).rolling(window=14).mean()
+        loss = (-delta.where(delta < 0, 0)).rolling(window=14).mean()
+        rs = gain / loss
+        hist['RSI'] = 100 - (100 / (1 + rs))
+
+        for date, row in hist.iterrows():
+            data.append({
+                "Date": date.strftime("%Y-%m-%d"),
+                "Open": round(row['Open'], 2) if not pd.isna(row['Open']) else None,
+                "High": round(row['High'], 2) if not pd.isna(row['High']) else None,
+                "Low": round(row['Low'], 2) if not pd.isna(row['Low']) else None,
+                "Close": round(row['Close'], 2) if not pd.isna(row['Close']) else None,
+                "Volume": int(row['Volume']) if not pd.isna(row['Volume']) else 0,
+                "MA20": round(row['MA20'], 2) if not pd.isna(row['MA20']) else None,
+                "MA50": round(row['MA50'], 2) if not pd.isna(row['MA50']) else None,
+                "MA200": round(row['MA200'], 2) if not pd.isna(row['MA200']) else None,
+                "RSI": round(row['RSI'], 2) if not pd.isna(row['RSI']) else None
+            })
+        return data
+    except Exception as e:
+        print(f"History error ({symbol}): {e}")
+        return []
+
+def get_brokerage_data(symbol):
+    """
+    Simüle edilmiş takas verisi döner (BIST gerçek takas verisi ücretlidir).
+    """
+    symbol = symbol.upper().replace(".IS", "")
+    return {
+        "top_buyers": [
+            {"broker": "Ziraat Yatırım", "quantity": 1250430, "percentage": 25.4},
+            {"broker": "İş Yatırım", "quantity": 980200, "percentage": 19.8},
+            {"broker": "Garanti BBVA", "quantity": 750000, "percentage": 15.2},
+            {"broker": "QNB Finans", "quantity": 420000, "percentage": 8.5},
+            {"broker": "Yatırım Finansman", "quantity": 310000, "percentage": 6.3}
+        ],
+        "top_sellers": [
+            {"broker": "Ak Yatırım", "quantity": -1150000, "percentage": 23.3},
+            {"broker": "Vakıf Yatırım", "quantity": -890000, "percentage": 18.0},
+            {"broker": "Yapı Kredi", "quantity": -650000, "percentage": 13.2},
+            {"broker": "Deniz Yatırım", "quantity": -520000, "percentage": 10.5},
+            {"broker": "Diğer", "quantity": -1720630, "percentage": 35.0}
+        ],
+        "note": "Takas verileri 2 gün gecikmelidir. Veriler simüle edilmiştir."
+    }
 
 def save_financial_cache(cache):
     try:

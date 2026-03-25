@@ -17,15 +17,18 @@ try:
         get_all_bist_stocks, 
         get_stock_data, 
         get_stock_details, 
-        get_stock_financials
+        get_stock_financials,
+        get_stock_history,
+        get_brokerage_data
     )
 except ImportError:
-    # Railway'de bazen path karışabiliyor, fallback yapalım
     from backend.financial_service import (
         get_all_bist_stocks, 
         get_stock_data, 
         get_stock_details, 
-        get_stock_financials
+        get_stock_financials,
+        get_stock_history,
+        get_brokerage_data
     )
 
 app = FastAPI(title="PhD Terminal API")
@@ -104,8 +107,31 @@ async def get_stocks(page: int = 1, limit: int = 20):
         "has_more": end < len(all_stocks)
     }
 
+@app.get("/stocks/{symbol}/detail")
+async def get_details_only(symbol: str):
+    data = get_stock_details(symbol)
+    if not data:
+        raise HTTPException(status_code=404, detail="Hisse bulunamadı")
+    return data
+
+@app.get("/stocks/{symbol}/financials")
+async def get_financials_only(symbol: str):
+    data = get_stock_financials(symbol)
+    if not data:
+        return {"data": [], "periods": [], "last_updated": None}
+    return data
+
+@app.get("/stocks/{symbol}/history")
+async def get_history_only(symbol: str, period: str = "1y"):
+    return get_stock_history(symbol, period)
+
+@app.get("/stocks/{symbol}/brokerage")
+async def get_brokerage_only(symbol: str):
+    return get_brokerage_data(symbol)
+
 @app.get("/stocks/{symbol}")
 async def get_details(symbol: str):
+    # Geriye uyumluluk için hepsini birden dönen endpoint
     return {
         "symbol": symbol,
         "price_data": get_stock_data(symbol),
