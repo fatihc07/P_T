@@ -89,8 +89,8 @@ SECTORS_DATA = load_json(SECTORS_FILE)
 # sectors.json'dan çekelim veya yedek listeyi kullanalım
 if SECTORS_DATA:
     ALL_BIST_STOCKS = [
-        {"symbol": s.replace(".IS", ""), "name": s.replace(".IS", "")} 
-        for s in SECTORS_DATA.keys() if not s.endswith(".IS")
+        {"symbol": s.replace(".IS", ""), "name": SECTORS_DATA[s].get("name", s.replace(".IS", ""))} 
+        for s in SECTORS_DATA.keys() if s.endswith(".IS")
     ]
 else:
     ALL_BIST_STOCKS = [

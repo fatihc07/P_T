@@ -159,3 +159,32 @@
 [2026-03-25 15:12:30] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
 [2026-03-25 15:12:30] 🔄 0 hisse zenginleştiriliyor...
 [2026-03-25 15:12:30] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:13:18] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:13:18] 🔄 0 hisse zenginleştiriliyor...
+[2026-03-25 15:13:18] ✅ 0 hisse hazırlandı.
+[2026-03-25 15:16:55] 🚀 Backend baslatildi.
+[2026-03-25 15:17:15] 🚀 Backend baslatildi.
+[2026-03-25 15:17:15] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 5)
+[2026-03-25 15:17:15] 🔄 5 hisse zenginleştiriliyor...
+[2026-03-25 15:17:16] ✅ 5 hisse hazırlandı.
+[2026-03-25 15:17:55] 🚀 Backend baslatildi.
+[2026-03-25 15:18:00] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:18:00] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-25 15:18:05] ✅ 15 hisse hazırlandı.
+[2026-03-25 15:18:08] 📋 Hisse listesi istendi (Sayfa: 2, Limit: 15)
+[2026-03-25 15:18:08] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-25 15:18:09] ✅ 15 hisse hazırlandı.
+[2026-03-25 15:18:10] 📋 Hisse listesi istendi (Sayfa: 3, Limit: 15)
+[2026-03-25 15:18:10] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-25 15:18:11] ✅ 15 hisse hazırlandı.
+[2026-03-25 15:18:17] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 15:18:17] ✅ THYAO mali tabloları hazır.
+[2026-03-25 15:18:17] 🔍 THYAO için detaylar istendi.
+[2026-03-25 15:18:17] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-25 15:18:17] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-25 15:18:18] ✅ 15 hisse hazırlandı.
+[2026-03-25 15:18:18] 📊 THYAO için mali tablolar istendi.
+[2026-03-25 15:18:18] ✅ THYAO mali tabloları hazır.
+[2026-03-25 15:18:18] ✅ THYAO detayları gönderildi.
+[2026-03-25 15:18:18] 🔍 THYAO için detaylar istendi.
+[2026-03-25 15:18:18] ✅ THYAO detayları gönderildi.
