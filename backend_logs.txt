@@ -725,3 +725,79 @@ di.
 [2026-03-26 11:08:53] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
 [2026-03-26 11:08:53] 🔄 15 hisse zenginleştiriliyor...
 [2026-03-26 11:08:54] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:11:30] 🔍 ZGYO için detaylar istendi.
+[2026-03-26 11:11:30] ✅ ZGYO detayları gönderildi.
+[2026-03-26 11:11:30] 📊 ZGYO için mali tablolar istendi.
+[2026-03-26 11:11:30] ✅ ZGYO mali tabloları hazır.
+[2026-03-26 11:11:30] 📊 ZGYO için mali tablolar istendi.
+[2026-03-26 11:11:30] 🔍 ZGYO için detaylar istendi.
+[2026-03-26 11:11:30] ✅ ZGYO mali tabloları hazır.
+[2026-03-26 11:11:30] ✅ ZGYO detayları gönderildi.
+[2026-03-26 11:15:31] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:15:31] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:15:31] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:15:31] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:15:31] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:15:32] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:16:51] 🚀 Backend baslatildi.
+[2026-03-26 11:16:56] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:16:56] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:17:06] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:17:08] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 11:17:08] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 11:17:08] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 11:17:08] ✅ ZOREN detayları gönderildi.
+[2026-03-26 11:17:08] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 11:17:08] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 11:17:08] ✅ ZOREN detayları gönderildi.
+[2026-03-26 11:17:08] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 11:17:37] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:17:37] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:17:37] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:17:38] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 11:17:38] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 11:17:38] ✅ ZOREN detayları gönderildi.
+[2026-03-26 11:19:01] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:19:01] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:19:02] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:20:18] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:20:18] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:20:21] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:21:41] 🚀 Backend baslatildi.
+[2026-03-26 11:21:47] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:21:47] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:21:47] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:21:49] 🔍 ZERGY için detaylar istendi.
+[2026-03-26 11:21:49] 📊 ZERGY için mali tablolar istendi.
+[2026-03-26 11:21:49] ✅ ZERGY detayları gönderildi.
+[2026-03-26 11:21:49] ✅ ZERGY mali tabloları hazır.
+[2026-03-26 11:21:49] 🔍 ZERGY için detaylar istendi.
+[2026-03-26 11:21:49] 📊 ZERGY için mali tablolar istendi.
+[2026-03-26 11:21:49] ✅ ZERGY detayları gönderildi.
+[2026-03-26 11:21:49] ✅ ZERGY mali tabloları hazır.
+[2026-03-26 11:22:37] 🔍 KARSN için detaylar istendi.
+[2026-03-26 11:22:37] ✅ KARSN detayları gönderildi.
+[2026-03-26 11:22:37] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:22:37] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:22:37] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:22:37] 📊 KARSN için mali tablolar istendi.
+[2026-03-26 11:22:37] ✅ KARSN mali tabloları hazır.
+[2026-03-26 11:22:37] 🔍 KARSN için detaylar istendi.
+[2026-03-26 11:22:37] ✅ KARSN detayları gönderildi.
+[2026-03-26 11:22:37] 📊 KARSN için mali tablolar istendi.
+[2026-03-26 11:22:37] ✅ KARSN mali tabloları hazır.
+[2026-03-26 11:23:42] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:23:42] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:23:42] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:29:40] 🚀 Backend baslatildi.
+[2026-03-26 11:29:45] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:29:45] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:29:46] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:29:48] 🔍 ZEDUR için detaylar istendi.
+[2026-03-26 11:29:48] 📊 ZEDUR için mali tablolar istendi.
+[2026-03-26 11:29:49] ✅ ZEDUR detayları gönderildi.
+[2026-03-26 11:29:49] 🔍 ZEDUR için detaylar istendi.
+[2026-03-26 11:29:49] ✅ ZEDUR detayları gönderildi.
+[2026-03-26 11:29:49] ✅ ZEDUR mali tabloları hazır.
+[2026-03-26 11:29:49] 📊 ZEDUR için mali tablolar istendi.
+[2026-03-26 11:29:49] ✅ ZEDUR mali tabloları hazır.

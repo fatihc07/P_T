@@ -1235,7 +1235,7 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
                   <div>
                        <h3 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
                            Piyasa Verileri
-                           <span style={{ fontSize: '0.6rem' }}>Yahoo</span>
+                           <span style={{ fontSize: '0.6rem' }}>Yahoo Finance</span>
                        </h3>
                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
@@ -1247,20 +1247,12 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
                                <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.enterpriseValue)}</div>
                            </div>
                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>F/K Oranı</div>
-                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.peRatio && detail.peRatio !== '-' ? Number(detail.peRatio).toFixed(2) : '-'}</div>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>52H Zirve</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--accent-color)' }}>{detail.fiftyTwoWeekHigh && detail.fiftyTwoWeekHigh !== '-' ? Number(detail.fiftyTwoWeekHigh).toLocaleString() + ' ₺' : '-'}</div>
                            </div>
                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>PD/DD</div>
-                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.pd_dd && detail.pd_dd !== '-' ? Number(detail.pd_dd).toFixed(2) : '-'}</div>
-                           </div>
-                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>FD/FAVÖK</div>
-                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.fd_favok && detail.fd_favok !== '-' ? Number(detail.fd_favok).toFixed(2) : '-'}</div>
-                           </div>
-                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>FAVÖK</div>
-                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.ebitda)}</div>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>52H Taban</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--loss-color)' }}>{detail.fiftyTwoWeekLow && detail.fiftyTwoWeekLow !== '-' ? Number(detail.fiftyTwoWeekLow).toLocaleString() + ' ₺' : '-'}</div>
                            </div>
                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
                                <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>Öz Kaynaklar</div>
@@ -1271,16 +1263,31 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
                                <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.netDebt)}</div>
                            </div>
                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>52H Zirve</div>
-                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--accent-color)' }}>{detail.fiftyTwoWeekHigh && detail.fiftyTwoWeekHigh !== '-' ? Number(detail.fiftyTwoWeekHigh).toLocaleString() + ' ₺' : '-'}</div>
-                           </div>
-                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>52H Taban</div>
-                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--loss-color)' }}>{detail.fiftyTwoWeekLow && detail.fiftyTwoWeekLow !== '-' ? Number(detail.fiftyTwoWeekLow).toLocaleString() + ' ₺' : '-'}</div>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>FAVÖK</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.ebitda)}</div>
                            </div>
                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
                                <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>Halka Açıklık</div>
                                <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.floatShares && detail.sharesOutstanding ? ((detail.floatShares / detail.sharesOutstanding) * 100).toFixed(2) + '%' : '-'}</div>
+                           </div>
+                       </div>
+                       
+                       {/* Finansal Oranlar */}
+                       <h3 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '10px', marginTop: '15px', display: 'flex', justifyContent: 'space-between' }}>
+                           Finansal Oranlar
+                       </h3>
+                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>F/K Oranı</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.peRatio && detail.peRatio !== '-' ? Number(detail.peRatio).toFixed(2) : '-'}</div>
+                           </div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>PD/DD</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.pd_dd && detail.pd_dd !== '-' ? Number(detail.pd_dd).toFixed(2) : '-'}</div>
+                           </div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>FD/FAVÖK</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.fd_favok && detail.fd_favok !== '-' ? Number(detail.fd_favok).toFixed(2) : '-'}</div>
                            </div>
                        </div>
                   </div>
