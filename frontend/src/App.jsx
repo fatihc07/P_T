@@ -1885,30 +1885,16 @@ function PortfolioView({ stocks }) {
 
 function CardBuilder({ stocks }) {
   const [canvasItems, setCanvasItems] = useState([]);
-  const [selectedStock, setSelectedStock] = useState('');
+  const [selectedStock, setSelectedStock] = useState(null);
   const [stockDetail, setStockDetail] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [cardStyle, setCardStyle] = useState('dark'); // 'dark', 'light', 'gradient'
   const canvasRef = useRef(null);
 
-  const availableData = [
-    { id: 'symbol', label: 'Sembol', icon: '🏷️' },
-    { id: 'name', label: 'Şirket Adı', icon: '🏢' },
-    { id: 'price', label: 'Fiyat', icon: '💰' },
-    { id: 'change', label: 'Değişim', icon: '📊' },
-    { id: 'changePercent', label: 'Değişim %', icon: '📈' },
-    { id: 'open', label: 'Açılış', icon: '🔓' },
-    { id: 'volume', label: 'Hacim', icon: '📦' },
-    { id: 'marketCap', label: 'Piyasa Değeri', icon: '💎' },
-    { id: 'peRatio', label: 'F/K Oranı', icon: '📐' },
-    { id: 'pd_dd', label: 'PD/DD', icon: '📏' },
-    { id: 'sector', label: 'Sektör', icon: '🏭' },
-    { id: 'industry', label: 'Endüstri', icon: '⚙️' },
-  ];
-
-  useEffect(() => {
-    if (selectedStock) {
-      fetchStockDetail(selectedStock);
-    }
-  }, [selectedStock]);
+  const filteredStocks = stocks.filter(s => 
+    s.symbol.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (s.name && s.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  ).slice(0, 30);
 
   const fetchStockDetail = async (symbol) => {
     try {
@@ -1922,22 +1908,33 @@ function CardBuilder({ stocks }) {
     }
   };
 
+  const handleStockSelect = (stock) => {
+    setSelectedStock(stock);
+    fetchStockDetail(stock.symbol);
+    setCanvasItems([]); // Yeni hisse seçilince canvas'ı temizle
+  };
+
   const handleDragStart = (e, item) => {
     e.dataTransfer.setData('text/plain', JSON.stringify(item));
   };
 
   const handleDrop = (e) => {
     e.preventDefault();
+    if (!selectedStock) {
+      alert('Lütfen önce bir hisse seçin!');
+      return;
+    }
+    
     const item = JSON.parse(e.dataTransfer.getData('text/plain'));
-    const rect = canvasRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
+    
+    // Aynı item zaten varsa ekleme
+    if (canvasItems.find(i => i.id === item.id)) {
+      return;
+    }
     
     setCanvasItems(prev => [...prev, {
       ...item,
       canvasId: Date.now(),
-      x,
-      y,
       value: getItemValue(item.id)
     }]);
   };
@@ -1963,6 +1960,8 @@ function CardBuilder({ stocks }) {
       case 'change': return stockDetail.change ? (stockDetail.change > 0 ? '+' : '') + stockDetail.change.toFixed(2) : '-';
       case 'changePercent': return stockDetail.changePercent ? (stockDetail.changePercent > 0 ? '+' : '') + stockDetail.changePercent.toFixed(2) + '%' : '-';
       case 'open': return stockDetail.open ? stockDetail.open.toLocaleString() + ' ₺' : '-';
+      case 'high': return stockDetail.high ? stockDetail.high.toLocaleString() + ' ₺' : '-';
+      case 'low': return stockDetail.low ? stockDetail.low.toLocaleString() + ' ₺' : '-';
       case 'volume': return formatLargeNumber(stockDetail.volume);
       case 'marketCap': return formatLargeNumber(stockDetail.marketCap);
       case 'peRatio': return stockDetail.peRatio && stockDetail.peRatio !== '-' ? Number(stockDetail.peRatio).toFixed(2) : '-';
@@ -1996,7 +1995,7 @@ function CardBuilder({ stocks }) {
       });
       
       const link = document.createElement('a');
-      link.download = `${selectedStock || 'phd'}_kart_${Date.now()}.png`;
+      link.download = `${selectedStock?.symbol || 'phd'}_kart_${Date.now()}.png`;
       link.href = canvasImage.toDataURL();
       link.click();
     } catch (error) {
@@ -2005,63 +2004,122 @@ function CardBuilder({ stocks }) {
     }
   };
 
+  const availableData = [
+    { id: 'symbol', label: 'Sembol', icon: '🏷️', color: '#00ff88' },
+    { id: 'price', label: 'Fiyat', icon: '💰', color: '#ffd700' },
+    { id: 'changePercent', label: 'Değişim %', icon: '📈', color: '#00bcd4' },
+    { id: 'marketCap', label: 'Piyasa Değeri', icon: '💎', color: '#9c27b0' },
+    { id: 'peRatio', label: 'F/K Oranı', icon: '📐', color: '#ff9800' },
+    { id: 'pd_dd', label: 'PD/DD', icon: '📏', color: '#e91e63' },
+    { id: 'volume', label: 'Hacim', icon: '📦', color: '#4caf50' },
+    { id: 'sector', label: 'Sektör', icon: '🏭', color: '#607d8b' },
+  ];
+
+  const getCardBackground = () => {
+    switch (cardStyle) {
+      case 'light': return 'linear-gradient(145deg, #f5f5f5, #e0e0e0)';
+      case 'gradient': return 'linear-gradient(145deg, #1a237e, #4a148c)';
+      default: return 'linear-gradient(145deg, rgba(20,20,20,0.98), rgba(10,10,10,0.99))';
+    }
+  };
+
   return (
     <div className="fade-in">
-      <h1 style={{ marginBottom: '1rem' }}>🎨 Kart Hazırla</h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
-        Sürükle-bırak yöntemiyle Twitter için paylaşım kartı oluşturun.
-      </p>
-
-      <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '2rem' }}>
-        {/* Sol Panel - Veri Elementleri */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
         <div>
-          <div className="stock-card" style={{ marginBottom: '1rem' }}>
-            <h3 style={{ marginBottom: '1rem' }}>📊 Hisse Seç</h3>
-            <select 
-              value={selectedStock}
-              onChange={(e) => setSelectedStock(e.target.value)}
-              style={{ 
-                width: '100%', 
-                padding: '10px', 
-                background: '#222', 
-                color: '#fff', 
-                border: '1px solid #444', 
-                borderRadius: '8px',
-                fontSize: '0.9rem'
-              }}
-            >
-              <option value="">Hisse seçiniz...</option>
-              {stocks.slice(0, 50).map(s => (
-                <option key={s.symbol} value={s.symbol}>{s.symbol} - {s.name}</option>
-              ))}
-            </select>
-          </div>
+          <h1 style={{ marginBottom: '0.5rem' }}>🎨 Kart Hazırla</h1>
+          <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
+            Hisse kartları oluşturun ve sosyal medyada paylaşın
+          </p>
+        </div>
+      </div>
 
+      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '1.5rem', alignItems: 'start' }}>
+        {/* SOL PANEL - Hisse Listesi */}
+        <div className="stock-card" style={{ position: 'sticky', top: '1rem' }}>
+          <h3 style={{ marginBottom: '1rem' }}>📊 Hisse Seç</h3>
+          
+          <input 
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Hisse ara..."
+            style={{ 
+              width: '100%', 
+              padding: '10px', 
+              background: '#222', 
+              color: '#fff', 
+              border: '1px solid #444', 
+              borderRadius: '8px',
+              marginBottom: '1rem'
+            }}
+          />
+
+          <div style={{ 
+            maxHeight: '400px', 
+            overflowY: 'auto',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: '8px'
+          }}>
+            {filteredStocks.map(stock => (
+              <div
+                key={stock.symbol}
+                onClick={() => handleStockSelect(stock)}
+                draggable
+                onDragStart={(e) => handleDragStart(e, { id: 'stock', symbol: stock.symbol, name: stock.name })}
+                style={{
+                  padding: '10px',
+                  background: selectedStock?.symbol === stock.symbol ? 'rgba(0, 200, 5, 0.2)' : 'rgba(255,255,255,0.03)',
+                  border: selectedStock?.symbol === stock.symbol ? '1px solid var(--accent-color)' : '1px solid rgba(255,255,255,0.08)',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease'
+                }}
+              >
+                <div style={{ fontWeight: 'bold', fontSize: '0.9rem', color: 'var(--accent-color)' }}>
+                  {stock.symbol.replace('.IS', '')}
+                </div>
+                <div style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginTop: '2px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {stock.name}
+                </div>
+                {stock.price && (
+                  <div style={{ fontSize: '0.75rem', marginTop: '4px', fontWeight: 'bold' }}>
+                    {stock.price.toLocaleString()} ₺
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ORTA PANEL - Veri Elementleri & Canvas */}
+        <div style={{ display: 'grid', gridTemplateColumns: '200px 1fr', gap: '1.5rem' }}>
+          {/* Veri Elementleri */}
           <div className="stock-card">
-            <h3 style={{ marginBottom: '1rem' }}>🧩 Veri Elementleri</h3>
-            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-              Sürükleyerek canvas'a bırakın
+            <h3 style={{ marginBottom: '1rem' }}>🧩 Veri Ekle</h3>
+            <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+              Sürükleyip bırakın
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {availableData.map(item => (
                 <div
                   key={item.id}
                   draggable
                   onDragStart={(e) => handleDragStart(e, item)}
                   style={{
-                    padding: '10px 12px',
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.1)',
+                    padding: '8px 10px',
+                    background: `${item.color}15`,
+                    border: `1px solid ${item.color}40`,
                     borderRadius: '8px',
                     cursor: 'grab',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: '10px',
-                    fontSize: '0.85rem',
-                    transition: 'all 0.2s ease'
+                    gap: '8px',
+                    fontSize: '0.8rem',
+                    transition: 'all 0.2s ease',
+                    color: item.color
                   }}
-                  onMouseEnter={(e) => e.target.style.background = 'rgba(0, 200, 5, 0.1)'}
-                  onMouseLeave={(e) => e.target.style.background = 'rgba(255,255,255,0.05)'}
                 >
                   <span>{item.icon}</span>
                   <span>{item.label}</span>
@@ -2069,141 +2127,213 @@ function CardBuilder({ stocks }) {
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Sağ Panel - Canvas */}
-        <div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <h3>🖼️ Kart Önizleme</h3>
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <button 
-                onClick={clearCanvas}
-                style={{
-                  padding: '8px 16px',
-                  background: 'rgba(255, 77, 77, 0.2)',
-                  border: '1px solid rgba(255, 77, 77, 0.3)',
-                  color: '#ff4d4d',
-                  borderRadius: '8px',
-                  cursor: 'pointer',
-                  fontSize: '0.85rem'
-                }}
-              >
-                🗑️ Temizle
-              </button>
-              <button 
-                onClick={downloadCard}
-                className="login-btn"
-                style={{ width: 'auto', padding: '8px 20px', marginTop: 0 }}
-              >
-                📥 İndir
-              </button>
-            </div>
-          </div>
-
-          <div
-            ref={canvasRef}
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-            style={{
-              minHeight: '500px',
-              background: 'linear-gradient(145deg, rgba(20,20,20,0.95), rgba(10,10,10,0.98))',
-              border: '2px dashed rgba(255,255,255,0.2)',
-              borderRadius: '16px',
-              padding: '2rem',
-              position: 'relative',
-              overflow: 'hidden'
-            }}
-          >
-            {canvasItems.length === 0 ? (
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '100%',
-                color: 'var(--text-secondary)',
-                textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎨</div>
-                <p>Sol panelden veri elementlerini sürükleyip buraya bırakın</p>
-                <p style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>Önce bir hisse seçmeyi unutmayın!</p>
+          {/* Canvas */}
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h3>🖼️ Kart Önizleme</h3>
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                <select 
+                  value={cardStyle}
+                  onChange={(e) => setCardStyle(e.target.value)}
+                  style={{ 
+                    padding: '6px 10px', 
+                    background: '#222', 
+                    color: '#fff', 
+                    border: '1px solid #444', 
+                    borderRadius: '6px',
+                    fontSize: '0.8rem'
+                  }}
+                >
+                  <option value="dark">🌙 Koyu</option>
+                  <option value="light">☀️ Açık</option>
+                  <option value="gradient">🎨 Gradient</option>
+                </select>
+                <button 
+                  onClick={clearCanvas}
+                  style={{
+                    padding: '6px 12px',
+                    background: 'rgba(255, 77, 77, 0.2)',
+                    border: '1px solid rgba(255, 77, 77, 0.3)',
+                    color: '#ff4d4d',
+                    borderRadius: '6px',
+                    cursor: 'pointer',
+                    fontSize: '0.8rem'
+                  }}
+                >
+                  🗑️
+                </button>
+                <button 
+                  onClick={downloadCard}
+                  className="login-btn"
+                  style={{ width: 'auto', padding: '6px 16px', marginTop: 0, fontSize: '0.8rem' }}
+                >
+                  📥 İndir
+                </button>
               </div>
-            ) : (
-              <div style={{ position: 'relative', minHeight: '450px' }}>
-                {/* Başlık */}
-                {selectedStock && (
+            </div>
+
+            <div
+              ref={canvasRef}
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+              style={{
+                minHeight: '550px',
+                background: getCardBackground(),
+                border: '2px dashed rgba(255,255,255,0.15)',
+                borderRadius: '20px',
+                padding: '2rem',
+                position: 'relative',
+                overflow: 'hidden'
+              }}
+            >
+              {!selectedStock ? (
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '100%',
+                  color: 'var(--text-secondary)',
+                  textAlign: 'center'
+                }}>
+                  <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>📊</div>
+                  <h3 style={{ marginBottom: '0.5rem' }}>Hisse Seçin</h3>
+                  <p>Sol panelden bir hisse seçerek başlayın</p>
+                </div>
+              ) : canvasItems.length === 0 ? (
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: '100%',
+                  color: 'var(--text-secondary)',
+                  textAlign: 'center'
+                }}>
+                  <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🎨</div>
+                  <h3 style={{ marginBottom: '0.5rem' }}>Veri Ekleyin</h3>
+                  <p>Soldan veri elementlerini sürükleyip bırakın</p>
+                </div>
+              ) : (
+                <div style={{ position: 'relative', minHeight: '500px' }}>
+                  {/* Başlık */}
                   <div style={{
                     textAlign: 'center',
                     marginBottom: '2rem',
-                    paddingBottom: '1rem',
-                    borderBottom: '1px solid rgba(255,255,255,0.1)'
+                    paddingBottom: '1.5rem',
+                    borderBottom: cardStyle === 'light' ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.1)'
                   }}>
-                    <h2 style={{ color: 'var(--accent-color)', fontSize: '2rem', margin: 0 }}>
-                      {selectedStock.replace('.IS', '')}
+                    <div style={{ 
+                      fontSize: '0.75rem', 
+                      color: cardStyle === 'light' ? '#666' : 'var(--text-secondary)',
+                      marginBottom: '0.5rem',
+                      letterSpacing: '2px'
+                    }}>
+                      BIST • PHD TERMİNAL
+                    </div>
+                    <h2 style={{ 
+                      color: cardStyle === 'light' ? '#000' : 'var(--accent-color)', 
+                      fontSize: '2.5rem', 
+                      margin: 0,
+                      fontWeight: '900'
+                    }}>
+                      {selectedStock.symbol.replace('.IS', '')}
                     </h2>
-                    <p style={{ color: 'var(--text-secondary)', margin: '5px 0 0 0', fontSize: '0.9rem' }}>
-                      {stockDetail?.name || ''}
+                    <p style={{ 
+                      color: cardStyle === 'light' ? '#444' : 'var(--text-secondary)', 
+                      margin: '8px 0 0 0', 
+                      fontSize: '1rem' 
+                    }}>
+                      {stockDetail?.name || selectedStock.name}
                     </p>
+                    {stockDetail?.sector && (
+                      <span style={{
+                        display: 'inline-block',
+                        marginTop: '10px',
+                        padding: '4px 12px',
+                        background: 'rgba(0, 200, 5, 0.1)',
+                        borderRadius: '20px',
+                        fontSize: '0.75rem',
+                        color: 'var(--accent-color)'
+                      }}>
+                        {stockDetail.sector}
+                      </span>
+                    )}
                   </div>
-                )}
 
-                {/* Canvas Items */}
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
-                  {canvasItems.map(item => (
-                    <div
-                      key={item.canvasId}
-                      style={{
-                        padding: '15px',
-                        background: 'rgba(255,255,255,0.03)',
-                        border: '1px solid rgba(255,255,255,0.08)',
-                        borderRadius: '12px',
-                        position: 'relative'
-                      }}
-                    >
-                      <button
-                        onClick={() => removeItem(item.canvasId)}
+                  {/* Canvas Items Grid */}
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: canvasItems.length === 1 ? '1fr' : 'repeat(2, 1fr)', 
+                    gap: '1rem' 
+                  }}>
+                    {canvasItems.map(item => (
+                      <div
+                        key={item.canvasId}
                         style={{
-                          position: 'absolute',
-                          top: '5px',
-                          right: '5px',
-                          background: 'rgba(255,77,77,0.3)',
-                          border: 'none',
-                          color: '#ff4d4d',
-                          width: '20px',
-                          height: '20px',
-                          borderRadius: '50%',
-                          cursor: 'pointer',
-                          fontSize: '0.7rem',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
+                          padding: '20px',
+                          background: cardStyle === 'light' ? 'rgba(0,0,0,0.03)' : 'rgba(255,255,255,0.03)',
+                          border: cardStyle === 'light' ? '1px solid rgba(0,0,0,0.08)' : '1px solid rgba(255,255,255,0.08)',
+                          borderRadius: '16px',
+                          position: 'relative',
+                          textAlign: 'center'
                         }}
                       >
-                        ✕
-                      </button>
-                      <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '5px' }}>
-                        {item.icon} {item.label}
+                        <button
+                          onClick={() => removeItem(item.canvasId)}
+                          style={{
+                            position: 'absolute',
+                            top: '8px',
+                            right: '8px',
+                            background: 'rgba(255,77,77,0.3)',
+                            border: 'none',
+                            color: '#ff4d4d',
+                            width: '22px',
+                            height: '22px',
+                            borderRadius: '50%',
+                            cursor: 'pointer',
+                            fontSize: '0.7rem',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center'
+                          }}
+                        >
+                          ✕
+                        </button>
+                        <div style={{ 
+                          fontSize: '0.7rem', 
+                          color: item.color || 'var(--text-secondary)', 
+                          marginBottom: '8px',
+                          letterSpacing: '1px'
+                        }}>
+                          {item.icon} {item.label.toUpperCase()}
+                        </div>
+                        <div style={{ 
+                          fontSize: '1.5rem', 
+                          fontWeight: 'bold',
+                          color: cardStyle === 'light' ? '#000' : '#fff'
+                        }}>
+                          {item.value}
+                        </div>
                       </div>
-                      <div style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
-                        {item.value}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
 
-                {/* Alt bilgi */}
-                <div style={{
-                  marginTop: '2rem',
-                  paddingTop: '1rem',
-                  borderTop: '1px solid rgba(255,255,255,0.1)',
-                  textAlign: 'center',
-                  fontSize: '0.7rem',
-                  color: 'var(--text-secondary)'
-                }}>
-                  PhD Terminal • {new Date().toLocaleDateString('tr-TR')}
+                  {/* Alt bilgi */}
+                  <div style={{
+                    marginTop: '2rem',
+                    paddingTop: '1rem',
+                    borderTop: cardStyle === 'light' ? '1px solid rgba(0,0,0,0.1)' : '1px solid rgba(255,255,255,0.1)',
+                    textAlign: 'center',
+                    fontSize: '0.7rem',
+                    color: cardStyle === 'light' ? '#888' : 'var(--text-secondary)'
+                  }}>
+                    📱 PhD Terminal • {new Date().toLocaleDateString('tr-TR')} • phdterminal.com
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -388,3 +388,74 @@ di.
 [2026-03-26 10:06:49] ✅ ZERGY mali tabloları hazır.
 [2026-03-26 10:06:49] 📊 ZERGY için mali tablolar istendi.
 [2026-03-26 10:06:49] ✅ ZERGY mali tabloları hazır.
+[2026-03-26 10:08:46] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:08:46] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:08:47] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:08:56] 🔍 YKBNK için detaylar istendi.
+[2026-03-26 10:08:57] ✅ YKBNK detayları gönderildi.
+[2026-03-26 10:09:44] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:09:44] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:09:45] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:09:45] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:09:45] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:09:48] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:09:48] 🔍 ZERGY için detaylar istendi.
+[2026-03-26 10:09:48] 📊 ZERGY için mali tablolar istendi.
+[2026-03-26 10:09:48] ✅ ZERGY mali tabloları hazır.
+[2026-03-26 10:09:51] 🔍 YUNSA için detaylar istendi.
+[2026-03-26 10:09:53] ✅ YUNSA detayları gönderildi.
+[2026-03-26 10:10:20] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:10:20] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 10:10:20] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 10:10:20] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 10:10:20] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 10:10:20] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:10:21] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:10:22] 🔍 ZGYO için detaylar istendi.
+[2026-03-26 10:10:22] 📊 ZGYO için mali tablolar istendi.
+[2026-03-26 10:10:22] ✅ ZGYO mali tabloları hazır.
+[2026-03-26 10:10:23] 🔍 ZGYO için detaylar istendi.
+[2026-03-26 10:10:23] 🔍 ZGYO için detaylar istendi.
+[2026-03-26 10:10:23] 📊 ZGYO için mali tablolar istendi.
+[2026-03-26 10:10:23] ✅ ZGYO mali tabloları hazır.
+[2026-03-26 10:10:24] 🔍 YYLGD için detaylar istendi.
+[2026-03-26 10:10:24] 📊 YYLGD için mali tablolar istendi.
+[2026-03-26 10:10:26] ✅ YYLGD detayları gönderildi.
+[2026-03-26 10:10:26] 🔍 YYLGD için detaylar istendi.
+[2026-03-26 10:10:33] ✅ YYLGD mali tabloları hazır.
+[2026-03-26 10:10:33] 📊 YYLGD için mali tablolar istendi.
+[2026-03-26 10:10:33] ✅ YYLGD mali tabloları hazır.
+[2026-03-26 10:14:43] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:14:43] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:14:43] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:14:43] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 10:14:43] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 10:14:43] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 10:14:43] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 10:14:45] 📊 YYLGD için mali tablolar istendi.
+[2026-03-26 10:14:45] 🔍 YYLGD için detaylar istendi.
+[2026-03-26 10:14:45] ✅ YYLGD mali tabloları hazır.
+[2026-03-26 10:14:45] 📊 YYLGD için mali tablolar istendi.
+[2026-03-26 10:14:45] ✅ YYLGD mali tabloları hazır.
+[2026-03-26 10:14:45] 🔍 YYLGD için detaylar istendi.
+[2026-03-26 10:14:45] 🔍 YYLGD için detaylar istendi.
+[2026-03-26 10:14:47] 🔍 YYLGD için detaylar istendi.
+di.
+[2026-03-26 10:14:47] ✅ YYLGD mali tabloları hazır.
+[2026-03-26 10:14:47] 🔍 YYLGD için detaylar istendi.
+[2026-03-26 10:14:47] 🔍 YYLGD için detaylar istendi.
+[2026-03-26 10:14:47] 📊 YYLGD için mali tablolar istendi.
+[2026-03-26 10:14:47] ✅ YYLGD mali tabloları hazır.
+[2026-03-26 10:14:49] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:14:49] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:14:54] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:14:56] 📊 KARSN için mali tablolar istendi.
+[2026-03-26 10:14:56] 🔍 KARSN için detaylar istendi.
+[2026-03-26 10:14:56] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:14:56] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:14:57] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:14:57] ✅ KARSN detayları gönderildi.
+[2026-03-26 10:14:57] 🔍 KARSN için detaylar istendi.
+[2026-03-26 10:14:57] ✅ KARSN mali tabloları hazır.
+[2026-03-26 10:14:58] 📊 KARSN için mali tablolar istendi.
+[2026-03-26 10:14:58] ✅ KARSN mali tabloları hazır.
