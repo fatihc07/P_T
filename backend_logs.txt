@@ -801,3 +801,58 @@ di.
 [2026-03-26 11:29:49] ✅ ZEDUR mali tabloları hazır.
 [2026-03-26 11:29:49] 📊 ZEDUR için mali tablolar istendi.
 [2026-03-26 11:29:49] ✅ ZEDUR mali tabloları hazır.
+[2026-03-26 11:30:34] 🔍 KARSN için detaylar istendi.
+[2026-03-26 11:30:34] 📊 KARSN için mali tablolar istendi.
+[2026-03-26 11:30:34] ✅ KARSN mali tabloları hazır.
+[2026-03-26 11:30:34] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:30:34] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:30:34] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:30:34] 📊 KARSN için mali tablolar istendi.
+[2026-03-26 11:30:34] ✅ KARSN mali tabloları hazır.
+[2026-03-26 11:30:35] ✅ KARSN detayları gönderildi.
+[2026-03-26 11:30:35] 🔍 KARSN için detaylar istendi.
+[2026-03-26 11:30:35] ✅ KARSN detayları gönderildi.
+[2026-03-26 11:30:48] 🔍 THYAO için detaylar istendi.
+[2026-03-26 11:30:48] 📊 THYAO için mali tablolar istendi.
+[2026-03-26 11:30:48] ✅ THYAO mali tabloları hazır.
+[2026-03-26 11:30:48] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:30:48] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:30:48] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:30:48] 📊 THYAO için mali tablolar istendi.
+[2026-03-26 11:30:48] ✅ THYAO mali tabloları hazır.
+[2026-03-26 11:30:49] ✅ THYAO detayları gönderildi.
+[2026-03-26 11:30:49] 🔍 THYAO için detaylar istendi.
+[2026-03-26 11:30:49] ✅ THYAO detayları gönderildi.
+[2026-03-26 11:30:59] 🔍 NVDA için detaylar istendi.
+[2026-03-26 11:31:00] 📊 NVDA için mali tablolar istendi.
+[2026-03-26 11:31:00] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:31:00] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:31:01] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:31:02] ⚠️ NVDA mali tabloları ÇEKİLEMEDİ.
+[2026-03-26 11:31:02] 📊 NVDA için mali tablolar istendi.
+[2026-03-26 11:31:02] ✅ NVDA detayları gönderildi.
+[2026-03-26 11:31:02] 🔍 NVDA için detaylar istendi.
+[2026-03-26 11:31:02] ✅ NVDA detayları gönderildi.
+[2026-03-26 11:31:03] ⚠️ NVDA mali tabloları ÇEKİLEMEDİ.
+[2026-03-26 11:31:10] 🔍 AAPL için detaylar istendi.
+[2026-03-26 11:31:10] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:31:10] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:31:11] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:31:11] 📊 AAPL için mali tablolar istendi.
+[2026-03-26 11:31:12] ✅ AAPL detayları gönderildi.
+[2026-03-26 11:31:12] 🔍 AAPL için detaylar istendi.
+[2026-03-26 11:31:12] ✅ AAPL detayları gönderildi.
+[2026-03-26 11:31:12] ⚠️ AAPL mali tabloları ÇEKİLEMEDİ.
+[2026-03-26 11:31:12] 📊 AAPL için mali tablolar istendi.
+[2026-03-26 11:31:14] ⚠️ AAPL mali tabloları ÇEKİLEMEDİ.
+[2026-03-26 11:31:33] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 11:31:33] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 11:31:33] ✅ 15 hisse hazırlandı.
+[2026-03-26 11:31:38] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 11:31:38] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 11:31:38] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 11:31:38] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 11:31:38] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 11:31:39] ✅ ZOREN detayları gönderildi.
+[2026-03-26 11:31:39] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 11:31:39] ✅ ZOREN detayları gönderildi.
