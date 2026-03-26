@@ -1,5 +1,6 @@
-import os
+
 import json
+import os
 import threading
 import time
 from datetime import datetime
@@ -332,6 +333,145 @@ async def get_cached_stocks():
                 return list(cache_data.keys())
         except: return []
     return []
+
+# IPO Cache
+IPO_CACHE_FILE = os.path.join(DATA_DIR, "ipo_cache.json")
+
+def load_json(path):
+    if os.path.exists(path):
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except:
+            return {}
+    return {}
+
+IPO_CACHE = load_json(IPO_CACHE_FILE)
+
+def save_ipo_cache(cache):
+    try:
+        with open(IPO_CACHE_FILE, "w", encoding="utf-8") as f:
+            json.dump(cache, f, ensure_ascii=False, indent=2)
+    except: pass
+
+@app.get("/ipo/list")
+async def get_ipo_list(page: int = 1, limit: int = 10, search: str = ""):
+    """Halka arz listesini döndürür - Yahoo Finance'den gerçek veri çeker"""
+    try:
+        # Cache kontrolü - 12 saat geçerli
+        cache_key = "ipo_list"
+        if cache_key in IPO_CACHE:
+            cached = IPO_CACHE[cache_key]
+            last_updated = datetime.fromisoformat(cached.get("last_updated", "2000-01-01"))
+            if (datetime.now() - last_updated).total_seconds() / 3600 < 12:
+                ipo_list = cached.get("items", [])
+                # Arama filtresi
+                if search:
+                    ipo_list = [ipo for ipo in ipo_list if search.lower() in ipo["company"].lower() or search.lower() in ipo["symbol"].lower()]
+                # Sayfalama
+                start = (page - 1) * limit
+                end = start + limit
+                paginated_list = ipo_list[start:end]
+                return {
+                    "items": paginated_list,
+                    "total": len(ipo_list),
+                    "page": page,
+                    "has_more": end < len(ipo_list)
+                }
+        
+        # BIST hisselerini Yahoo Finance'den çek
+        all_stocks = get_all_bist_stocks()
+        
+        # Halka arz olan şirketleri filtrele (son 3 yılda halka arz olanlar)
+        ipo_list = []
+        current_year = datetime.now().year
+        
+        # Daha fazla hisse kontrol et ve paralel işlem kullan
+        def check_ipo(stock):
+            try:
+                symbol = stock["symbol"]
+                yf_symbol = f"{symbol}.IS"
+                ticker = yf.Ticker(yf_symbol)
+                info = ticker.info
+                
+                # Halka arz tarihini kontrol et
+                ipo_date = info.get("firstTradeDateMilliseconds")
+                if ipo_date:
+                    ipo_year = datetime.fromtimestamp(ipo_date / 1000).year
+                    if ipo_year >= current_year - 3:  # Son 3 yıl
+                        # Fiyat bilgisini al
+                        hist = ticker.history(period="5d")
+                        current_price = 0
+                        if not hist.empty:
+                            current_price = round(hist.iloc[-1]['Close'], 2)
+                        
+                        return {
+                            "id": 0,  # Geçici, sonra güncellenecek
+                            "company": info.get("longName", symbol),
+                            "symbol": symbol,
+                            "sector": info.get("sector", "Bilinmiyor"),
+                            "date": datetime.fromtimestamp(ipo_date / 1000).strftime("%Y-%m-%d"),
+                            "priceRange": f"{info.get('previousClose', current_price):.2f} ₺",
+                            "currentPrice": current_price,
+                            "volume": f"{info.get('volume', 0):,}",
+                            "marketCap": info.get("marketCap"),
+                            "status": "Tamamlandı",
+                            "description": info.get("longBusinessSummary", "")[:150] + "..." if info.get("longBusinessSummary") else "Halka arz tamamlandı"
+                        }
+            except Exception as e:
+                print(f"IPO check error for {stock.get('symbol', 'unknown')}: {e}")
+            return None
+        
+        # Paralel olarak IPO kontrolü yap
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        
+        with ThreadPoolExecutor(max_workers=20) as executor:
+            futures = {executor.submit(check_ipo, stock): stock for stock in all_stocks[:200]}
+            for future in as_completed(futures):
+                result = future.result()
+                if result:
+                    ipo_list.append(result)
+        
+        # Tarihe göre sırala (en yeni önce)
+        ipo_list.sort(key=lambda x: x["date"], reverse=True)
+        
+        # ID'leri güncelle
+        for i, ipo in enumerate(ipo_list):
+            ipo["id"] = i + 1
+        
+        # Cache'e kaydet
+        IPO_CACHE[cache_key] = {
+            "items": ipo_list,
+            "last_updated": datetime.now().isoformat()
+        }
+        save_ipo_cache(IPO_CACHE)
+        
+        # Arama filtresi
+        if search:
+            ipo_list = [ipo for ipo in ipo_list if search.lower() in ipo["company"].lower() or search.lower() in ipo["symbol"].lower()]
+        
+        # Sayfalama
+        start = (page - 1) * limit
+        end = start + limit
+        paginated_list = ipo_list[start:end]
+        
+        return {
+            "items": paginated_list,
+            "total": len(ipo_list),
+            "page": page,
+            "has_more": end < len(ipo_list)
+        }
+    except Exception as e:
+        print(f"IPO verisi çekilemedi: {e}")
+        import traceback
+        traceback.print_exc()
+        # Fallback: boş liste döndür
+        return {
+            "items": [],
+            "total": 0,
+            "page": page,
+            "has_more": False
+        }
 
 @app.post("/admin/create-user")
 async def create_user(req: LoginRequest):

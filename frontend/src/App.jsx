@@ -547,6 +547,10 @@ function App() {
               <i className="nav-icon">💼</i>
               <span>Portföy Yönetimi</span>
             </li>
+            <li className={`nav-item ${activeTab === 'IPO' ? 'active' : ''}`} onClick={() => { setActiveTab('IPO'); setActiveStock(null); }}>
+              <i className="nav-icon">🔔</i>
+              <span>Halka Arzlar</span>
+            </li>
             {user?.email === ADMIN_EMAIL && (
               <li className={`nav-item ${activeTab === 'Admin' ? 'active' : ''}`} onClick={() => setActiveTab('Admin')}>
                 <i className="nav-icon">⚙️</i>
@@ -696,6 +700,8 @@ function App() {
                 <CardBuilder stocks={stocks} />
             ) : activeTab === 'Portfolio' ? (
                 <PortfolioView stocks={stocks} />
+            ) : activeTab === 'IPO' ? (
+                <IPOView />
             ) : activeStock ? (
                 <StockDetailView 
                     symbol={activeStock} 
@@ -1642,34 +1648,6 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
               </div>
           )}
           
-          {/* Alt Bilgi - Yahoo Finance Linki */}
-          <div style={{ 
-            marginTop: '2rem', 
-            padding: '1rem', 
-            background: 'rgba(255,255,255,0.02)', 
-            borderRadius: '12px', 
-            textAlign: 'center',
-            border: '1px solid rgba(255,255,255,0.05)'
-          }}>
-            <a 
-              href={`https://finance.yahoo.com/quote/${symbol}.IS/`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ 
-                color: 'var(--accent-color)', 
-                textDecoration: 'none',
-                fontSize: '0.85rem',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px'
-              }}
-            >
-              📊 Yahoo Finance'de {symbol} detaylarını görüntüle →
-            </a>
-            <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: '8px 0 0 0' }}>
-              * Veriler Yahoo Finance'den çekilmektedir
-            </p>
-          </div>
       </div>
   );
 }
@@ -1947,6 +1925,306 @@ function PortfolioView({ stocks }) {
       <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '12px', textAlign: 'center' }}>
         <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0 }}>
           💡 İpucu: Fiyatları güncellemek için "Fiyatları Güncelle" butonuna tıklayın. Veriler anlık olarak çekilmektedir.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function IPOView() {
+  const [ipos, setIpos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [total, setTotal] = useState(0);
+  const observerTarget = useRef(null);
+
+  const fetchIPOs = async (pageNum = 1, search = '') => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/ipo/list?page=${pageNum}&limit=10&search=${search}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (pageNum === 1) {
+          setIpos(data.items);
+        } else {
+          setIpos(prev => [...prev, ...data.items]);
+        }
+        setTotal(data.total);
+        setHasMore(data.has_more);
+      }
+    } catch (error) {
+      console.error('IPO verisi çekilemedi:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchIPOs(1, '');
+  }, []);
+
+  // Arama
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      setPage(1);
+      setIpos([]);
+      setLoading(true);
+      fetchIPOs(1, searchTerm);
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm]);
+
+  // Infinite Scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries[0].isIntersecting && hasMore && !loading) {
+          const nextPage = page + 1;
+          setPage(nextPage);
+          fetchIPOs(nextPage, searchTerm);
+        }
+      },
+      { threshold: 1.0 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
+    };
+  }, [hasMore, loading, page, searchTerm]);
+
+  const getStatusColor = (status) => {
+    switch(status) {
+      case 'Tamamlandı': return 'var(--accent-color)';
+      case 'Onaylandı': return '#2196f3';
+      case 'Beklemede': return '#ff9800';
+      default: return 'var(--text-secondary)';
+    }
+  };
+
+  const formatMarketCap = (value) => {
+    if (!value) return '-';
+    if (value >= 1e9) return (value / 1e9).toFixed(2) + ' Mrd ₺';
+    if (value >= 1e6) return (value / 1e6).toFixed(2) + ' Mn ₺';
+    return value.toLocaleString() + ' ₺';
+  };
+
+  return (
+    <div className="fade-in">
+      <div style={{ marginBottom: '2rem' }}>
+        <h1 style={{ marginBottom: '0.5rem' }}>🔔 Halka Arzlar</h1>
+        <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
+          BIST halka arz takvimi ve sonuçları - Gerçek zamanlı veri (Yahoo Finance)
+        </p>
+      </div>
+
+      {/* Arama */}
+      <div style={{ marginBottom: '1.5rem' }}>
+        <input 
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Şirket veya sembol ara..."
+          style={{ 
+            width: '100%', 
+            padding: '12px 16px', 
+            background: '#222', 
+            color: '#fff', 
+            border: '1px solid #444', 
+            borderRadius: '10px',
+            fontSize: '0.9rem'
+          }}
+        />
+      </div>
+
+      {/* İstatistikler */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
+        <div className="stock-card" style={{ textAlign: 'center', padding: '1.5rem' }}>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>TOPLAM HALKA ARZ</div>
+          <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{total}</div>
+        </div>
+        <div className="stock-card" style={{ textAlign: 'center', padding: '1.5rem' }}>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>TAMAMLANAN</div>
+          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: 'var(--accent-color)' }}>
+            {ipos.filter(i => i.status === 'Tamamlandı').length}
+          </div>
+        </div>
+        <div className="stock-card" style={{ textAlign: 'center', padding: '1.5rem' }}>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>ONAYLANAN</div>
+          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#2196f3' }}>
+            {ipos.filter(i => i.status === 'Onaylandı').length}
+          </div>
+        </div>
+        <div className="stock-card" style={{ textAlign: 'center', padding: '1.5rem' }}>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>BEKLEYEN</div>
+          <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#ff9800' }}>
+            {ipos.filter(i => i.status === 'Beklemede').length}
+          </div>
+        </div>
+      </div>
+
+      {/* Halka Arz Listesi */}
+      {loading && ipos.length === 0 ? (
+        <div className="loading-state">Yükleniyor...</div>
+      ) : ipos.length === 0 ? (
+        <div className="stock-card" style={{ textAlign: 'center', padding: '3rem' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📭</div>
+          <h3>Halka Arz Bulunamadı</h3>
+          <p style={{ color: 'var(--text-secondary)' }}>
+            {searchTerm ? `"${searchTerm}" aramasına uygun halka arz bulunamadı.` : 'Son 3 yılda halka arz verisi bulunamadı.'}
+          </p>
+        </div>
+      ) : (
+        <>
+          <div className="stock-table-container">
+            <table>
+              <thead>
+                <tr>
+                  <th>ŞİRKET</th>
+                  <th>SEKTÖR</th>
+                  <th>TARİH</th>
+                  <th>GÜNCEL FİYAT</th>
+                  <th>PİYASA DEĞERİ</th>
+                  <th>DURUM</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ipos.map((ipo, index) => (
+                  <tr key={`${ipo.symbol}-${index}`} style={{ cursor: 'pointer' }}>
+                    <td>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+                          <span className="badge" style={{ 
+                            background: 'rgba(0, 200, 5, 0.2)', 
+                            color: 'var(--accent-color)',
+                            fontWeight: 'bold'
+                          }}>
+                            {ipo.symbol}
+                          </span>
+                        </div>
+                        <span style={{ fontWeight: '500', marginBottom: '2px' }}>{ipo.company}</span>
+                        {ipo.description && (
+                          <small style={{ 
+                            color: 'var(--text-secondary)', 
+                            fontSize: '0.7rem', 
+                            fontStyle: 'italic',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden'
+                          }}>
+                            {ipo.description}
+                          </small>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      <span style={{ 
+                        padding: '4px 8px',
+                        background: 'rgba(255,255,255,0.05)',
+                        borderRadius: '6px',
+                        fontSize: '0.8rem'
+                      }}>
+                        {ipo.sector}
+                      </span>
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontWeight: '500' }}>{ipo.date}</span>
+                        <small style={{ color: 'var(--text-secondary)', fontSize: '0.7rem' }}>
+                          {new Date(ipo.date).toLocaleDateString('tr-TR', { weekday: 'long' })}
+                        </small>
+                      </div>
+                    </td>
+                    <td>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span style={{ fontWeight: 'bold', fontSize: '1.1rem' }}>
+                          {ipo.currentPrice ? ipo.currentPrice.toLocaleString() + ' ₺' : ipo.priceRange}
+                        </span>
+                        {ipo.currentPrice && (
+                          <small style={{ color: 'var(--text-secondary)', fontSize: '0.7rem' }}>
+                            İlk: {ipo.priceRange}
+                          </small>
+                        )}
+                      </div>
+                    </td>
+                    <td>
+                      <span style={{ fontWeight: '500' }}>
+                        {formatMarketCap(ipo.marketCap)}
+                      </span>
+                    </td>
+                    <td>
+                      <span style={{ 
+                        color: getStatusColor(ipo.status),
+                        fontWeight: 'bold',
+                        padding: '6px 12px',
+                        background: `${getStatusColor(ipo.status)}20`,
+                        borderRadius: '8px',
+                        fontSize: '0.75rem',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}>
+                        {ipo.status === 'Tamamlandı' && '✓'}
+                        {ipo.status === 'Onaylandı' && '⏳'}
+                        {ipo.status === 'Beklemede' && '⏸'}
+                        {ipo.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Infinite Scroll Tetikleyici */}
+          <div ref={observerTarget} style={{ 
+            height: '60px', 
+            margin: '20px 0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}>
+            {hasMore && !loading && (
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '10px',
+                color: 'var(--text-secondary)', 
+                fontSize: '0.85rem'
+              }}>
+                <div className="spinner" style={{
+                  width: '20px',
+                  height: '20px',
+                  border: '2px solid rgba(255,255,255,0.1)',
+                  borderTop: '2px solid var(--accent-color)',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite'
+                }}></div>
+                Daha fazla yükleniyor...
+              </div>
+            )}
+            {!hasMore && ipos.length > 0 && (
+              <span style={{ color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+                ✓ Tüm halka arzlar yüklendi ({total} adet)
+              </span>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* Bilgi Notu */}
+      <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '12px', textAlign: 'center' }}>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0 }}>
+          ℹ️ Halka arz verileri Yahoo Finance'den gerçek zamanlı olarak çekilmektedir. 
+          Yatırım kararlarınızı vermeden önce resmi duyuruları ve KAP bildirimlerini kontrol ediniz.
         </p>
       </div>
     </div>
