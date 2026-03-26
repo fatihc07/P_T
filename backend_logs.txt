@@ -459,3 +459,37 @@ di.
 [2026-03-26 10:14:57] ✅ KARSN mali tabloları hazır.
 [2026-03-26 10:14:58] 📊 KARSN için mali tablolar istendi.
 [2026-03-26 10:14:58] ✅ KARSN mali tabloları hazır.
+[2026-03-26 10:17:33] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:17:33] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:17:33] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:17:33] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:17:33] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:17:33] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:17:33] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:17:49] 🔍 YYAPI için detaylar istendi.
+[2026-03-26 10:17:49] 📊 YYAPI için mali tablolar istendi.
+[2026-03-26 10:17:50] ✅ YYAPI mali tabloları hazır.
+[2026-03-26 10:17:50] 📊 YYAPI için mali tablolar istendi.
+[2026-03-26 10:17:50] ✅ YYAPI mali tabloları hazır.
+[2026-03-26 10:17:50] ✅ YYAPI detayları gönderildi.
+[2026-03-26 10:17:50] 🔍 YYAPI için detaylar istendi.
+[2026-03-26 10:17:53] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:17:53] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:17:54] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:17:54] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:17:54] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:17:54] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:17:55] 🔍 YYAPI için detaylar istendi.
+[2026-03-26 10:17:55] 📊 YYAPI için mali tablolar istendi.
+[2026-03-26 10:17:55] ✅ YYAPI mali tabloları hazır.
+[2026-03-26 10:17:55] 🔍 YYAPI için detaylar istendi.
+[2026-03-26 10:17:55] 📊 YYAPI için mali tablolar istendi.
+[2026-03-26 10:17:55] ✅ YYAPI mali tabloları hazır.
+[2026-03-26 10:17:56] 🔍 YYAPI için detaylar istendi.
+[2026-03-26 10:19:12] 🔍 YESIL için detaylar istendi.
+[2026-03-26 10:19:12] 📊 YESIL için mali tablolar istendi.
+[2026-03-26 10:19:13] ✅ YESIL detayları gönderildi.
+[2026-03-26 10:19:13] 🔍 YESIL için detaylar istendi.
+[2026-03-26 10:19:13] ✅ YESIL mali tabloları hazır.
+[2026-03-26 10:19:13] 📊 YESIL için mali tablolar istendi.
+[2026-03-26 10:19:13] ✅ YESIL mali tabloları hazır.

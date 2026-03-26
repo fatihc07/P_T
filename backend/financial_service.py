@@ -158,14 +158,51 @@ def get_stock_details(symbol):
     """
     clean_symbol = symbol.replace(".IS", "").upper()
     
+    # Varsayılan sonuç şablonu
+    default_result = {
+        "symbol": clean_symbol,
+        "name": clean_symbol,
+        "price": 0,
+        "change": 0,
+        "changePercent": 0,
+        "sector": SECTORS_DATA.get(symbol, "Bilinmiyor"),
+        "industry": "",
+        "description": "",
+        "website": "",
+        "marketCap": None,
+        "peRatio": "-",
+        "pd_dd": "-",
+        "fd_favok": "-",
+        "netDebt": 0,
+        "floatShares": None,
+        "sharesOutstanding": None,
+        "tv_symbol": f"BIST:{clean_symbol}",
+        "last_updated": datetime.now().isoformat(),
+        "calculation_source": "Yahoo Finance üzerinden hesaplanmıştır.",
+        "fiftyTwoWeekHigh": "-",
+        "fiftyTwoWeekLow": "-",
+        "enterpriseValue": None,
+        "bookValue": "-",
+        "ebitda": None
+    }
+    
     # Cache kontrolü - 24 saat geçerli
     cache_key = f"{clean_symbol}_details"
     if cache_key in STOCK_CACHE:
         cached = STOCK_CACHE[cache_key]
-        last_updated = datetime.fromisoformat(cached.get("last_updated", "2000-01-01"))
-        if (datetime.now() - last_updated).hours < 24:
-            print(f"✅ {clean_symbol} detayları cache'den döndürüldü")
-            return cached
+        try:
+            last_updated = datetime.fromisoformat(cached.get("last_updated", "2000-01-01"))
+            time_diff = datetime.now() - last_updated
+            # Saat cinsinden farkı kontrol et
+            if time_diff.total_seconds() / 3600 < 24:
+                print(f"✅ {clean_symbol} detayları cache'den döndürüldü")
+                # Eksik alanları varsayılan değerlerle doldur
+                for key in default_result:
+                    if key not in cached:
+                        cached[key] = default_result[key]
+                return cached
+        except Exception as e:
+            print(f"⚠️ Cache okuma hatası: {e}")
     
     try:
         yf_symbol = symbol if symbol.endswith(".IS") else f"{symbol}.IS"
@@ -189,6 +226,15 @@ def get_stock_details(symbol):
         pb = info.get("priceToBook")
         ebitda = info.get("enterpriseToEbitda")
         
+        # Yeni eklenen veriler
+        fifty_two_week_high = info.get("fiftyTwoWeekHigh")
+        fifty_two_week_low = info.get("fiftyTwoWeekLow")
+        enterprise_value = info.get("enterpriseValue")
+        book_value = info.get("bookValue")
+        total_debt = info.get("totalDebt", 0)
+        total_cash = info.get("totalCash", 0)
+        ebitda_value = info.get("ebitda")
+        
         result = {
             "symbol": symbol.replace(".IS", ""),
             "name": info.get("longName", symbol),
@@ -203,12 +249,18 @@ def get_stock_details(symbol):
             "peRatio": round(pe, 2) if pe is not None and not pd.isna(pe) else "-",
             "pd_dd": round(pb, 2) if pb is not None and not pd.isna(pb) else "-",
             "fd_favok": round(ebitda, 2) if ebitda is not None and not pd.isna(ebitda) else "-",
-            "netDebt": info.get("totalDebt", 0) - info.get("totalCash", 0),
+            "netDebt": total_debt - total_cash,
             "floatShares": info.get("floatShares"),
             "sharesOutstanding": info.get("sharesOutstanding"),
             "tv_symbol": f"BIST:{symbol.replace('.IS', '')}",
             "last_updated": datetime.now().isoformat(),
-            "calculation_source": "Yahoo Finance üzerinden hesaplanmıştır."
+            "calculation_source": "Yahoo Finance üzerinden hesaplanmıştır.",
+            # Yeni eklenen alanlar
+            "fiftyTwoWeekHigh": round(fifty_two_week_high, 2) if fifty_two_week_high else "-",
+            "fiftyTwoWeekLow": round(fifty_two_week_low, 2) if fifty_two_week_low else "-",
+            "enterpriseValue": enterprise_value,
+            "bookValue": round(book_value, 2) if book_value else "-",
+            "ebitda": ebitda_value
         }
         
         # Cache'e kaydet
@@ -219,12 +271,9 @@ def get_stock_details(symbol):
         return result
     except Exception as e:
         print(f"Details error ({symbol}): {e}")
-        return {
-            "symbol": symbol,
-            "sector": SECTORS_DATA.get(symbol, "Bilinmiyor"),
-            "peRatio": "-",
-            "pd_dd": "-"
-        }
+        # Hata durumunda varsayılan sonuç döndür
+        default_result["last_updated"] = datetime.now().isoformat()
+        return default_result
 
 def fetch_financials(symbol):
     if not isy_fetch:

@@ -1216,6 +1216,10 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
                                <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.marketCap)}</div>
                            </div>
                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>Firma Değeri</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.enterpriseValue)}</div>
+                           </div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
                                <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>F/K Oranı</div>
                                <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.peRatio && detail.peRatio !== '-' ? Number(detail.peRatio).toFixed(2) : '-'}</div>
                            </div>
@@ -1228,8 +1232,24 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
                                <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.fd_favok && detail.fd_favok !== '-' ? Number(detail.fd_favok).toFixed(2) : '-'}</div>
                            </div>
                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>FAVÖK</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.ebitda)}</div>
+                           </div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>Öz Kaynaklar</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.bookValue && detail.bookValue !== '-' ? Number(detail.bookValue).toFixed(2) + ' ₺' : '-'}</div>
+                           </div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
                                <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>Net Borç</div>
                                <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.netDebt)}</div>
+                           </div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>52H Zirve</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--accent-color)' }}>{detail.fiftyTwoWeekHigh && detail.fiftyTwoWeekHigh !== '-' ? Number(detail.fiftyTwoWeekHigh).toLocaleString() + ' ₺' : '-'}</div>
+                           </div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>52H Taban</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold', color: 'var(--loss-color)' }}>{detail.fiftyTwoWeekLow && detail.fiftyTwoWeekLow !== '-' ? Number(detail.fiftyTwoWeekLow).toLocaleString() + ' ₺' : '-'}</div>
                            </div>
                            <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
                                <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>Halka Açıklık</div>
