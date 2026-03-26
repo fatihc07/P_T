@@ -148,12 +148,68 @@ async def get_stocks(page: int = 1, limit: int = 20):
 @app.get("/stocks/{symbol}/detail")
 def get_details_only(symbol: str):
     log_to_file(f"🔍 {symbol} için detaylar istendi.")
-    data = get_stock_details(symbol)
-    if not data:
-        log_to_file(f"❌ {symbol} detayları bulunamadı.")
-        raise HTTPException(status_code=404, detail="Hisse bulunamadı")
-    log_to_file(f"✅ {symbol} detayları gönderildi.")
-    return data
+    try:
+        data = get_stock_details(symbol)
+        if not data:
+            log_to_file(f"❌ {symbol} detayları bulunamadı.")
+            # Boş veri yerine varsayılan veri döndür
+            data = {
+                "symbol": symbol.replace(".IS", ""),
+                "name": symbol.replace(".IS", ""),
+                "price": 0,
+                "change": 0,
+                "changePercent": 0,
+                "sector": "Bilinmiyor",
+                "industry": "",
+                "description": "",
+                "website": "",
+                "marketCap": None,
+                "peRatio": "-",
+                "pd_dd": "-",
+                "fd_favok": "-",
+                "netDebt": 0,
+                "floatShares": None,
+                "sharesOutstanding": None,
+                "tv_symbol": f"BIST:{symbol.replace('.IS', '')}",
+                "last_updated": datetime.now().isoformat(),
+                "calculation_source": "Veri bulunamadı",
+                "fiftyTwoWeekHigh": "-",
+                "fiftyTwoWeekLow": "-",
+                "enterpriseValue": None,
+                "bookValue": "-",
+                "ebitda": None
+            }
+        log_to_file(f"✅ {symbol} detayları gönderildi.")
+        return data
+    except Exception as e:
+        log_to_file(f"🔥 {symbol} detay hatası: {str(e)}")
+        # Hata durumunda da varsayılan veri döndür
+        return {
+            "symbol": symbol.replace(".IS", ""),
+            "name": symbol.replace(".IS", ""),
+            "price": 0,
+            "change": 0,
+            "changePercent": 0,
+            "sector": "Bilinmiyor",
+            "industry": "",
+            "description": f"Veri çekilemedi: {str(e)}",
+            "website": "",
+            "marketCap": None,
+            "peRatio": "-",
+            "pd_dd": "-",
+            "fd_favok": "-",
+            "netDebt": 0,
+            "floatShares": None,
+            "sharesOutstanding": None,
+            "tv_symbol": f"BIST:{symbol.replace('.IS', '')}",
+            "last_updated": datetime.now().isoformat(),
+            "calculation_source": "Hata oluştu",
+            "fiftyTwoWeekHigh": "-",
+            "fiftyTwoWeekLow": "-",
+            "enterpriseValue": None,
+            "bookValue": "-",
+            "ebitda": None
+        }
 
 @app.get("/stocks/{symbol}/financials")
 def get_financials_only(symbol: str):

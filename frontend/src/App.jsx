@@ -1094,9 +1094,30 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
 
   return (
       <div className="fade-in" style={{ maxWidth: '100%', margin: '0 auto', padding: '0 1rem' }}>
-          <button onClick={onBack} style={{ marginBottom: '1rem', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display:'flex', alignItems:'center', gap:'5px' }}>
-              ← Listeye Dön
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <button onClick={onBack} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display:'flex', alignItems:'center', gap:'5px' }}>
+                  ← Listeye Dön
+              </button>
+              <a 
+                href={`https://finance.yahoo.com/quote/${symbol}.IS/`}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '5px',
+                  color: 'var(--accent-color)', 
+                  textDecoration: 'none',
+                  fontSize: '0.85rem',
+                  padding: '6px 12px',
+                  background: 'rgba(0, 200, 5, 0.1)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(0, 200, 5, 0.2)'
+                }}
+              >
+                  📊 Yahoo Finance'de Aç →
+              </a>
+          </div>
 
           {/* Tab Menu */}
           <div style={{ display: 'flex', gap: '10px', marginBottom: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '10px' }}>
@@ -1620,6 +1641,35 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
                   </div>
               </div>
           )}
+          
+          {/* Alt Bilgi - Yahoo Finance Linki */}
+          <div style={{ 
+            marginTop: '2rem', 
+            padding: '1rem', 
+            background: 'rgba(255,255,255,0.02)', 
+            borderRadius: '12px', 
+            textAlign: 'center',
+            border: '1px solid rgba(255,255,255,0.05)'
+          }}>
+            <a 
+              href={`https://finance.yahoo.com/quote/${symbol}.IS/`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ 
+                color: 'var(--accent-color)', 
+                textDecoration: 'none',
+                fontSize: '0.85rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              📊 Yahoo Finance'de {symbol} detaylarını görüntüle →
+            </a>
+            <p style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', margin: '8px 0 0 0' }}>
+              * Veriler Yahoo Finance'den çekilmektedir
+            </p>
+          </div>
       </div>
   );
 }
@@ -2280,6 +2330,25 @@ function CardBuilder({ stocks }) {
                         {stockDetail.sector}
                       </span>
                     )}
+                    <a 
+                      href={`https://finance.yahoo.com/quote/${symbol}.IS/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ 
+                        display: 'inline-block',
+                        marginTop: '10px',
+                        marginLeft: '10px',
+                        color: 'var(--text-secondary)', 
+                        textDecoration: 'none',
+                        fontSize: '0.75rem',
+                        padding: '4px 12px',
+                        background: 'rgba(255,255,255,0.05)',
+                        borderRadius: '20px',
+                        border: '1px solid rgba(255,255,255,0.1)'
+                      }}
+                    >
+                      📊 Yahoo Finance
+                    </a>
                   </div>
 
                   {/* Canvas Items Grid */}

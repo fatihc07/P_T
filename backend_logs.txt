@@ -493,3 +493,143 @@ di.
 [2026-03-26 10:19:13] ✅ YESIL mali tabloları hazır.
 [2026-03-26 10:19:13] 📊 YESIL için mali tablolar istendi.
 [2026-03-26 10:19:13] ✅ YESIL mali tabloları hazır.
+[2026-03-26 10:22:16] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:22:16] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:22:16] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:22:18] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:22:18] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:22:18] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:22:18] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:22:18] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:22:18] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:22:18] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:22:20] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:22:20] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 10:22:20] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 10:22:20] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:22:20] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 10:22:20] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 10:22:20] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:22:36] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:22:36] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 10:22:36] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 10:22:36] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:22:36] 🔍 ZOREN için detaylar istendi.
+[2026-03-26 10:22:36] 📊 ZOREN için mali tablolar istendi.
+[2026-03-26 10:22:36] ✅ ZOREN mali tabloları hazır.
+[2026-03-26 10:26:26] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:26:26] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:26:26] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:26:33] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:26:33] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:26:33] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:26:33] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:26:33] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:26:33] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:26:33] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:26:46] 🚀 Backend baslatildi.
+[2026-03-26 10:26:49] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:26:49] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:26:50] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:26:51] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:26:51] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:26:51] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:26:53] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:26:53] ✅ ZRGYO detayları gönderildi.
+[2026-03-26 10:26:53] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:26:53] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:26:53] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:26:53] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:26:53] ✅ ZRGYO detayları gönderildi.
+[2026-03-26 10:26:53] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:26:56] 🔍 ZGYO için detaylar istendi.
+[2026-03-26 10:26:56] 📊 ZGYO için mali tablolar istendi.
+[2026-03-26 10:26:56] ✅ ZGYO mali tabloları hazır.
+[2026-03-26 10:26:56] ✅ ZGYO detayları gönderildi.
+[2026-03-26 10:26:56] 📊 ZGYO için mali tablolar istendi.
+[2026-03-26 10:26:56] ✅ ZGYO mali tabloları hazır.
+[2026-03-26 10:26:56] 🔍 ZGYO için detaylar istendi.
+[2026-03-26 10:26:56] ✅ ZGYO detayları gönderildi.
+[2026-03-26 10:26:59] 📊 ZGYO için mali tablolar istendi.
+[2026-03-26 10:26:59] 🔍 ZGYO için detaylar istendi.
+[2026-03-26 10:26:59] ✅ ZGYO mali tabloları hazır.
+[2026-03-26 10:26:59] ✅ ZGYO detayları gönderildi.
+[2026-03-26 10:26:59] 📊 ZGYO için mali tablolar istendi.
+[2026-03-26 10:26:59] ✅ ZGYO mali tabloları hazır.
+[2026-03-26 10:26:59] 🔍 ZGYO için detaylar istendi.
+[2026-03-26 10:26:59] ✅ ZGYO detayları gönderildi.
+[2026-03-26 10:27:02] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:27:02] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:27:02] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:27:02] ✅ ZRGYO detayları gönderildi.
+[2026-03-26 10:27:02] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:27:02] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:27:02] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:27:02] ✅ ZRGYO detayları gönderildi.
+[2026-03-26 10:27:06] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:27:06] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:27:06] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:27:06] ✅ ZRGYO detayları gönderildi.
+[2026-03-26 10:27:06] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:27:06] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:27:07] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:27:07] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:27:07] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:27:07] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:27:50] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:27:50] ✅ ZRGYO detayları gönderildi.
+[2026-03-26 10:27:50] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:27:50] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:27:50] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:27:50] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:27:51] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:27:51] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:27:51] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:27:51] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:28:21] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:28:21] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:28:22] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:28:22] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:28:22] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:28:22] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:28:22] ✅ ZRGYO detayları gönderildi.
+[2026-03-26 10:28:22] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:28:22] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:28:22] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:28:22] ✅ ZRGYO detayları gönderildi.
+[2026-03-26 10:29:12] 🔍 KARSN için detaylar istendi.
+[2026-03-26 10:29:12] 📊 KARSN için mali tablolar istendi.
+[2026-03-26 10:29:12] ✅ KARSN mali tabloları hazır.
+[2026-03-26 10:29:12] ✅ KARSN detayları gönderildi.
+[2026-03-26 10:29:12] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:29:12] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:29:13] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:29:13] 📊 KARSN için mali tablolar istendi.
+[2026-03-26 10:29:13] ✅ KARSN mali tabloları hazır.
+[2026-03-26 10:29:13] 🔍 KARSN için detaylar istendi.
+[2026-03-26 10:29:13] ✅ KARSN detayları gönderildi.
+[2026-03-26 10:29:36] 🔍 KARSN için detaylar istendi.
+[2026-03-26 10:29:36] ✅ KARSN detayları gönderildi.
+[2026-03-26 10:29:36] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:29:36] ✅ ZRGYO detayları gönderildi.
+[2026-03-26 10:29:36] 📊 KARSN için mali tablolar istendi.
+[2026-03-26 10:29:36] ✅ KARSN mali tabloları hazır.
+[2026-03-26 10:29:36] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:29:36] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:29:36] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:29:36] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:29:37] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:29:37] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:29:37] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:29:37] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:30:34] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-26 10:30:34] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-26 10:30:34] ✅ 15 hisse hazırlandı.
+[2026-03-26 10:30:35] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:30:35] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:30:35] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:30:35] ✅ ZRGYO detayları gönderildi.
+[2026-03-26 10:30:35] 📊 ZRGYO için mali tablolar istendi.
+[2026-03-26 10:30:35] 🔍 ZRGYO için detaylar istendi.
+[2026-03-26 10:30:35] ✅ ZRGYO mali tabloları hazır.
+[2026-03-26 10:30:35] ✅ ZRGYO detayları gönderildi.
