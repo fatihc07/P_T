@@ -13,6 +13,21 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
+# Supabase client
+try:
+    from supabase import create_client, Client
+    SUPABASE_URL = os.getenv("SUPABASE_URL", "")
+    SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")  # Service key for admin operations
+    supabase: Client = None
+    if SUPABASE_URL and SUPABASE_KEY:
+        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+        print("✅ Supabase client initialized")
+    else:
+        print("⚠️ Supabase credentials not found, using local JSON")
+except ImportError:
+    supabase = None
+    print("⚠️ Supabase library not installed, using local JSON")
+
 # --- Loglama Sistemi ---
 def log_to_file(message):
     try:
@@ -207,6 +222,17 @@ async def heartbeat():
 
 @app.get("/admin/users")
 async def get_admin_users():
+    # Supabase varsa oradan çek
+    if supabase:
+        try:
+            response = supabase.auth.admin.list_users()
+            users = [user.email for user in response if user.email]
+            print(f"✅ Supabase'den {len(users)} kullanıcı çekildi")
+            return users
+        except Exception as e:
+            print(f"⚠️ Supabase'den kullanıcı çekilemedi: {e}")
+    
+    # Fallback: local JSON
     return list(users_db.keys())
 
 @app.get("/admin/stats")
@@ -221,9 +247,17 @@ async def get_admin_stats():
                 cached_count = len(cache_data)
         except: pass
     
+    # Kullanıcı sayısını Supabase'den al
+    user_count = len(users_db)
+    if supabase:
+        try:
+            response = supabase.auth.admin.list_users()
+            user_count = len([u for u in response if u.email])
+        except: pass
+    
     return {
         "cached_financials": cached_count,
-        "total_users": len(users_db),
+        "total_users": user_count,
         "online_users": 1 # Şimdilik basitçe 1 dönelim
     }
 
@@ -245,6 +279,22 @@ async def get_cached_stocks():
 
 @app.post("/admin/create-user")
 async def create_user(req: LoginRequest):
+    # Supabase varsa orada oluştur
+    if supabase:
+        try:
+            # Supabase'de kullanıcı oluştur
+            response = supabase.auth.admin.create_user({
+                "email": req.username,
+                "password": req.password,
+                "email_confirm": True  # Otomatik onayla
+            })
+            print(f"✅ Supabase'de kullanıcı oluşturuldu: {req.username}")
+            return {"status": "success", "message": f"{req.username} kullanıcısı oluşturuldu"}
+        except Exception as e:
+            print(f"⚠️ Supabase'de kullanıcı oluşturulamadı: {e}")
+            raise HTTPException(status_code=400, detail=f"Kullanıcı oluşturulamadı: {str(e)}")
+    
+    # Fallback: local JSON
     if req.username in users_db:
         raise HTTPException(status_code=400, detail="Kullanıcı zaten mevcut")
     
@@ -264,6 +314,30 @@ async def delete_user(username: str):
     if username == "admin":
         raise HTTPException(status_code=400, detail="Admin kullanıcısı silinemez")
     
+    # Supabase varsa oradan sil
+    if supabase:
+        try:
+            # Önce kullanıcıyı email ile bul
+            users = supabase.auth.admin.list_users()
+            user_to_delete = None
+            for user in users:
+                if user.email == username:
+                    user_to_delete = user
+                    break
+            
+            if user_to_delete:
+                supabase.auth.admin.delete_user(user_to_delete.id)
+                print(f"✅ Supabase'den kullanıcı silindi: {username}")
+                return {"status": "success", "message": f"{username} kullanıcısı silindi"}
+            else:
+                raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
+        except HTTPException:
+            raise
+        except Exception as e:
+            print(f"⚠️ Supabase'den kullanıcı silinemedi: {e}")
+            raise HTTPException(status_code=400, detail=f"Kullanıcı silinemedi: {str(e)}")
+    
+    # Fallback: local JSON
     if username not in users_db:
         raise HTTPException(status_code=404, detail="Kullanıcı bulunamadı")
     

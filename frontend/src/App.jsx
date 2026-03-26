@@ -539,6 +539,14 @@ function App() {
               <i className="nav-icon">🏭</i>
               <span>Sektör analizi</span>
             </li>
+            <li className={`nav-item ${activeTab === 'KartHazirla' ? 'active' : ''}`} onClick={() => { setActiveTab('KartHazirla'); setActiveStock(null); }}>
+              <i className="nav-icon">🎨</i>
+              <span>Kart Hazırla</span>
+            </li>
+            <li className={`nav-item ${activeTab === 'Portfolio' ? 'active' : ''}`} onClick={() => { setActiveTab('Portfolio'); setActiveStock(null); }}>
+              <i className="nav-icon">💼</i>
+              <span>Portföy Yönetimi</span>
+            </li>
             {user?.email === ADMIN_EMAIL && (
               <li className={`nav-item ${activeTab === 'Admin' ? 'active' : ''}`} onClick={() => setActiveTab('Admin')}>
                 <i className="nav-icon">⚙️</i>
@@ -684,6 +692,10 @@ function App() {
               </div>
             </div>
             </div>
+            ) : activeTab === 'KartHazirla' ? (
+                <CardBuilder stocks={stocks} />
+            ) : activeTab === 'Portfolio' ? (
+                <PortfolioView stocks={stocks} />
             ) : activeStock ? (
                 <StockDetailView 
                     symbol={activeStock} 
@@ -1081,7 +1093,7 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
   };
 
   return (
-      <div className="fade-in" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+      <div className="fade-in" style={{ maxWidth: '100%', margin: '0 auto', padding: '0 1rem' }}>
           <button onClick={onBack} style={{ marginBottom: '1rem', background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', display:'flex', alignItems:'center', gap:'5px' }}>
               ← Listeye Dön
           </button>
@@ -1194,49 +1206,36 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
 
                   {/* Piyasa Verileri */}
                   <div>
-                       <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '15px', display: 'flex', justifyContent: 'space-between' }}>
+                       <h3 style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '10px', display: 'flex', justifyContent: 'space-between' }}>
                            Piyasa Verileri
-                           <span style={{ fontSize: '0.65rem' }}>Kaynak: Yahoo ({detail.last_updated ? new Date(detail.last_updated).toLocaleTimeString('tr-TR') : ''})</span>
+                           <span style={{ fontSize: '0.6rem' }}>Yahoo</span>
                        </h3>
-                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '15px' }}>
-                           <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>Piyasa Değeri</div>
-                               <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.marketCap)}</div>
+                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>Piyasa Değeri</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.marketCap)}</div>
                            </div>
-                           <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>F/K Oranı</div>
-                               <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{detail.peRatio && detail.peRatio !== '-' ? Number(detail.peRatio).toFixed(2) : '-'}</div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>F/K Oranı</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.peRatio && detail.peRatio !== '-' ? Number(detail.peRatio).toFixed(2) : '-'}</div>
                            </div>
-                           <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>PD/DD</div>
-                               <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{detail.pd_dd && detail.pd_dd !== '-' ? Number(detail.pd_dd).toFixed(2) : '-'}</div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>PD/DD</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.pd_dd && detail.pd_dd !== '-' ? Number(detail.pd_dd).toFixed(2) : '-'}</div>
                            </div>
-                           <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>FD/FAVÖK</div>
-                               <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{detail.fd_favok && detail.fd_favok !== '-' ? Number(detail.fd_favok).toFixed(2) : '-'}</div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>FD/FAVÖK</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.fd_favok && detail.fd_favok !== '-' ? Number(detail.fd_favok).toFixed(2) : '-'}</div>
                            </div>
-                           <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>Net Borç</div>
-                               <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.netDebt)}</div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>Net Borç</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.netDebt)}</div>
                            </div>
-                           <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>Halka Açıklık</div>
-                               <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{detail.floatShares && detail.sharesOutstanding ? ((detail.floatShares / detail.sharesOutstanding) * 100).toFixed(2) + '%' : '-'}</div>
-                           </div>
-                           <div style={{ padding: '12px', background: 'rgba(255,255,255,0.02)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)', gridColumn: 'span 2' }}>
-                               <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '4px' }}>Sermaye (Ödenmiş)</div>
-                               <div style={{ fontSize: '1rem', fontWeight: 'bold' }}>{formatLargeNumber(detail.sharesOutstanding)}</div>
+                           <div style={{ padding: '8px', background: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                               <div style={{ fontSize: '0.65rem', color: 'var(--text-secondary)', marginBottom: '2px' }}>Halka Açıklık</div>
+                               <div style={{ fontSize: '0.85rem', fontWeight: 'bold' }}>{detail.floatShares && detail.sharesOutstanding ? ((detail.floatShares / detail.sharesOutstanding) * 100).toFixed(2) + '%' : '-'}</div>
                            </div>
                        </div>
-                       {detail.calculation_source && (
-                           <div style={{ marginTop: '15px', fontSize: '0.7rem', color: 'var(--text-secondary)', fontStyle: 'italic', background: 'rgba(255,255,255,0.02)', padding: '8px', borderRadius: '8px', borderLeft: '3px solid var(--accent-color)' }}>
-                               ℹ️ {detail.calculation_source}
-                               <br/>
-                               <span style={{ fontSize: '0.65rem', opacity: 0.7 }}>
-                                 Hesaplama Mantığı: Net Borç = (K.V. + U.V. Finansal Borçlar) - Nakit | PD/DD = Piyasa Değeri / Özkaynaklar | Rasyolar son bilançodaki finansal kalemler ve anlık fiyat üzerinden hesaplanmıştır.
-                               </span>
-                           </div>
-                       )}
                   </div>
               </div>
           </div>
@@ -1602,6 +1601,613 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
               </div>
           )}
       </div>
+  );
+}
+
+function PortfolioView({ stocks }) {
+  const [portfolio, setPortfolio] = useState([]);
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [newItem, setNewItem] = useState({ symbol: '', quantity: '', buyPrice: '' });
+  const [selectedStock, setSelectedStock] = useState('');
+
+  // Portföyü localStorage'dan yükle
+  useEffect(() => {
+    const saved = localStorage.getItem('portfolio');
+    if (saved) {
+      try {
+        setPortfolio(JSON.parse(saved));
+      } catch (e) {
+        console.error('Portföy yüklenemedi:', e);
+      }
+    }
+  }, []);
+
+  // Portföyü localStorage'a kaydet
+  useEffect(() => {
+    localStorage.setItem('portfolio', JSON.stringify(portfolio));
+  }, [portfolio]);
+
+  const addToPortfolio = () => {
+    if (!selectedStock || !newItem.quantity || !newItem.buyPrice) {
+      alert('Lütfen tüm alanları doldurun!');
+      return;
+    }
+
+    const stock = stocks.find(s => s.symbol === selectedStock);
+    const item = {
+      id: Date.now(),
+      symbol: selectedStock,
+      name: stock?.name || selectedStock,
+      quantity: Number(newItem.quantity),
+      buyPrice: Number(newItem.buyPrice),
+      currentPrice: stock?.price || 0,
+      buyDate: new Date().toLocaleDateString('tr-TR')
+    };
+
+    setPortfolio(prev => [...prev, item]);
+    setNewItem({ symbol: '', quantity: '', buyPrice: '' });
+    setSelectedStock('');
+    setShowAddForm(false);
+  };
+
+  const removeFromPortfolio = (id) => {
+    if (confirm('Bu hisseyi portföyden çıkarmak istediğinize emin misiniz?')) {
+      setPortfolio(prev => prev.filter(item => item.id !== id));
+    }
+  };
+
+  const updateCurrentPrices = () => {
+    setPortfolio(prev => prev.map(item => {
+      const stock = stocks.find(s => s.symbol === item.symbol);
+      return {
+        ...item,
+        currentPrice: stock?.price || item.currentPrice
+      };
+    }));
+  };
+
+  // Toplam değer hesapla
+  const totalInvestment = portfolio.reduce((sum, item) => sum + (item.quantity * item.buyPrice), 0);
+  const currentValue = portfolio.reduce((sum, item) => sum + (item.quantity * item.currentPrice), 0);
+  const totalProfitLoss = currentValue - totalInvestment;
+  const profitLossPercent = totalInvestment > 0 ? ((totalProfitLoss / totalInvestment) * 100) : 0;
+
+  return (
+    <div className="fade-in">
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+        <div>
+          <h1 style={{ marginBottom: '0.5rem' }}>💼 Portföy Yönetimi</h1>
+          <p style={{ color: 'var(--text-secondary)', margin: 0 }}>
+            Yatırım portföyünüzü takip edin ve yönetin.
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button 
+            onClick={updateCurrentPrices}
+            style={{
+              padding: '10px 20px',
+              background: 'rgba(0, 200, 5, 0.2)',
+              border: '1px solid rgba(0, 200, 5, 0.3)',
+              color: 'var(--accent-color)',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              fontSize: '0.9rem'
+            }}
+          >
+            🔄 Fiyatları Güncelle
+          </button>
+          <button 
+            onClick={() => setShowAddForm(true)}
+            className="login-btn"
+            style={{ width: 'auto', padding: '10px 20px', marginTop: 0 }}
+          >
+            ➕ Hisse Ekle
+          </button>
+        </div>
+      </div>
+
+      {/* Özet Kartları */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem', marginBottom: '2rem' }}>
+        <div className="stock-card" style={{ textAlign: 'center', padding: '1.5rem' }}>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>TOPLAM YATIRIM</div>
+          <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{totalInvestment.toLocaleString()} ₺</div>
+        </div>
+        <div className="stock-card" style={{ textAlign: 'center', padding: '1.5rem' }}>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>GÜNCEL DEĞER</div>
+          <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{currentValue.toLocaleString()} ₺</div>
+        </div>
+        <div className="stock-card" style={{ textAlign: 'center', padding: '1.5rem' }}>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>KAR/ZARAR</div>
+          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: totalProfitLoss >= 0 ? 'var(--accent-color)' : 'var(--loss-color)' }}>
+            {totalProfitLoss >= 0 ? '+' : ''}{totalProfitLoss.toLocaleString()} ₺
+          </div>
+        </div>
+        <div className="stock-card" style={{ textAlign: 'center', padding: '1.5rem' }}>
+          <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>GETİRİ ORANI</div>
+          <div style={{ fontSize: '1.5rem', fontWeight: 'bold', color: profitLossPercent >= 0 ? 'var(--accent-color)' : 'var(--loss-color)' }}>
+            {profitLossPercent >= 0 ? '+' : ''}{profitLossPercent.toFixed(2)}%
+          </div>
+        </div>
+      </div>
+
+      {/* Hisse Ekleme Formu */}
+      {showAddForm && (
+        <div className="stock-card" style={{ marginBottom: '2rem', animation: 'fadeIn 0.3s ease' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h3 style={{ margin: 0 }}>➕ Portföye Hisse Ekle</h3>
+            <button onClick={() => setShowAddForm(false)} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '1.2rem' }}>✕</button>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr auto', gap: '1rem', alignItems: 'end' }}>
+            <div>
+              <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Hisse Seç</label>
+              <select 
+                value={selectedStock}
+                onChange={(e) => setSelectedStock(e.target.value)}
+                style={{ 
+                  width: '100%', 
+                  padding: '10px', 
+                  background: '#222', 
+                  color: '#fff', 
+                  border: '1px solid #444', 
+                  borderRadius: '8px'
+                }}
+              >
+                <option value="">Seçiniz...</option>
+                {stocks.slice(0, 50).map(s => (
+                  <option key={s.symbol} value={s.symbol}>{s.symbol}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Adet</label>
+              <input 
+                type="number"
+                value={newItem.quantity}
+                onChange={(e) => setNewItem(prev => ({ ...prev, quantity: e.target.value }))}
+                placeholder="100"
+                style={{ 
+                  width: '100%', 
+                  padding: '10px', 
+                  background: '#222', 
+                  color: '#fff', 
+                  border: '1px solid #444', 
+                  borderRadius: '8px'
+                }}
+              />
+            </div>
+            <div>
+              <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', display: 'block', marginBottom: '0.5rem' }}>Alış Fiyatı (₺)</label>
+              <input 
+                type="number"
+                value={newItem.buyPrice}
+                onChange={(e) => setNewItem(prev => ({ ...prev, buyPrice: e.target.value }))}
+                placeholder="25.50"
+                step="0.01"
+                style={{ 
+                  width: '100%', 
+                  padding: '10px', 
+                  background: '#222', 
+                  color: '#fff', 
+                  border: '1px solid #444', 
+                  borderRadius: '8px'
+                }}
+              />
+            </div>
+            <button 
+              onClick={addToPortfolio}
+              className="login-btn"
+              style={{ width: 'auto', padding: '10px 20px', marginTop: 0 }}
+            >
+              Ekle
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Portföy Listesi */}
+      {portfolio.length === 0 ? (
+        <div className="stock-card" style={{ textAlign: 'center', padding: '3rem' }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📊</div>
+          <h3>Portföyünüz boş</h3>
+          <p style={{ color: 'var(--text-secondary)' }}>Hisse ekleyerek portföy takibine başlayın!</p>
+        </div>
+      ) : (
+        <div className="stock-table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>SEMBOL</th>
+                <th>ADET</th>
+                <th>ALIŞ FİYATI</th>
+                <th>GÜNCEL FİYAT</th>
+                <th>TOPLAM DEĞER</th>
+                <th>KAR/ZARAR</th>
+                <th>İŞLEM</th>
+              </tr>
+            </thead>
+            <tbody>
+              {portfolio.map(item => {
+                const totalBuy = item.quantity * item.buyPrice;
+                const totalCurrent = item.quantity * item.currentPrice;
+                const profitLoss = totalCurrent - totalBuy;
+                const profitLossPercent = ((profitLoss / totalBuy) * 100);
+
+                return (
+                  <tr key={item.id}>
+                    <td>
+                      <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <span className="badge" style={{ width: 'fit-content', marginBottom: '4px' }}>{item.symbol}</span>
+                        <small style={{ color: 'var(--text-secondary)', fontSize: '0.75rem' }}>{item.name}</small>
+                      </div>
+                    </td>
+                    <td><strong>{item.quantity.toLocaleString()}</strong></td>
+                    <td>{item.buyPrice.toLocaleString()} ₺</td>
+                    <td>{item.currentPrice.toLocaleString()} ₺</td>
+                    <td><strong>{totalCurrent.toLocaleString()} ₺</strong></td>
+                    <td className={profitLoss >= 0 ? 'change-up' : 'change-down'}>
+                      <strong>{profitLoss >= 0 ? '+' : ''}{profitLoss.toLocaleString()} ₺</strong>
+                      <br />
+                      <small>({profitLossPercent >= 0 ? '+' : ''}{profitLossPercent.toFixed(2)}%)</small>
+                    </td>
+                    <td>
+                      <button 
+                        onClick={() => removeFromPortfolio(item.id)}
+                        style={{
+                          background: 'rgba(255, 77, 77, 0.2)',
+                          border: '1px solid rgba(255, 77, 77, 0.3)',
+                          color: '#ff4d4d',
+                          padding: '6px 12px',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          fontSize: '0.75rem'
+                        }}
+                      >
+                        🗑️ Sil
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Alt Bilgi */}
+      <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'rgba(255, 255, 255, 0.02)', borderRadius: '12px', textAlign: 'center' }}>
+        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', margin: 0 }}>
+          💡 İpucu: Fiyatları güncellemek için "Fiyatları Güncelle" butonuna tıklayın. Veriler anlık olarak çekilmektedir.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+function CardBuilder({ stocks }) {
+  const [canvasItems, setCanvasItems] = useState([]);
+  const [selectedStock, setSelectedStock] = useState('');
+  const [stockDetail, setStockDetail] = useState(null);
+  const canvasRef = useRef(null);
+
+  const availableData = [
+    { id: 'symbol', label: 'Sembol', icon: '🏷️' },
+    { id: 'name', label: 'Şirket Adı', icon: '🏢' },
+    { id: 'price', label: 'Fiyat', icon: '💰' },
+    { id: 'change', label: 'Değişim', icon: '📊' },
+    { id: 'changePercent', label: 'Değişim %', icon: '📈' },
+    { id: 'open', label: 'Açılış', icon: '🔓' },
+    { id: 'volume', label: 'Hacim', icon: '📦' },
+    { id: 'marketCap', label: 'Piyasa Değeri', icon: '💎' },
+    { id: 'peRatio', label: 'F/K Oranı', icon: '📐' },
+    { id: 'pd_dd', label: 'PD/DD', icon: '📏' },
+    { id: 'sector', label: 'Sektör', icon: '🏭' },
+    { id: 'industry', label: 'Endüstri', icon: '⚙️' },
+  ];
+
+  useEffect(() => {
+    if (selectedStock) {
+      fetchStockDetail(selectedStock);
+    }
+  }, [selectedStock]);
+
+  const fetchStockDetail = async (symbol) => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/stocks/${symbol}/detail`);
+      if (res.ok) {
+        const data = await res.json();
+        setStockDetail(data);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleDragStart = (e, item) => {
+    e.dataTransfer.setData('text/plain', JSON.stringify(item));
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    const item = JSON.parse(e.dataTransfer.getData('text/plain'));
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
+    setCanvasItems(prev => [...prev, {
+      ...item,
+      canvasId: Date.now(),
+      x,
+      y,
+      value: getItemValue(item.id)
+    }]);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const getItemValue = (itemId) => {
+    if (!stockDetail) return '-';
+    
+    const formatLargeNumber = (num) => {
+      if (!num) return '-';
+      if (num >= 1e9) return (num / 1e9).toFixed(2) + ' Mr';
+      if (num >= 1e6) return (num / 1e6).toFixed(2) + ' Mn';
+      return num.toLocaleString();
+    };
+
+    switch (itemId) {
+      case 'symbol': return stockDetail.symbol?.replace('.IS', '') || '-';
+      case 'name': return stockDetail.name || '-';
+      case 'price': return stockDetail.price ? stockDetail.price.toLocaleString() + ' ₺' : '-';
+      case 'change': return stockDetail.change ? (stockDetail.change > 0 ? '+' : '') + stockDetail.change.toFixed(2) : '-';
+      case 'changePercent': return stockDetail.changePercent ? (stockDetail.changePercent > 0 ? '+' : '') + stockDetail.changePercent.toFixed(2) + '%' : '-';
+      case 'open': return stockDetail.open ? stockDetail.open.toLocaleString() + ' ₺' : '-';
+      case 'volume': return formatLargeNumber(stockDetail.volume);
+      case 'marketCap': return formatLargeNumber(stockDetail.marketCap);
+      case 'peRatio': return stockDetail.peRatio && stockDetail.peRatio !== '-' ? Number(stockDetail.peRatio).toFixed(2) : '-';
+      case 'pd_dd': return stockDetail.pd_dd && stockDetail.pd_dd !== '-' ? Number(stockDetail.pd_dd).toFixed(2) : '-';
+      case 'sector': return stockDetail.sector || '-';
+      case 'industry': return stockDetail.industry || '-';
+      default: return '-';
+    }
+  };
+
+  const removeItem = (canvasId) => {
+    setCanvasItems(prev => prev.filter(item => item.canvasId !== canvasId));
+  };
+
+  const clearCanvas = () => {
+    setCanvasItems([]);
+  };
+
+  const downloadCard = async () => {
+    const canvas = canvasRef.current;
+    if (!canvas || canvasItems.length === 0) {
+      alert('Lütfen önce kart içeriği oluşturun!');
+      return;
+    }
+
+    try {
+      const html2canvas = (await import('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm')).default;
+      const canvasImage = await html2canvas(canvas, {
+        backgroundColor: '#0d0f12',
+        scale: 2
+      });
+      
+      const link = document.createElement('a');
+      link.download = `${selectedStock || 'phd'}_kart_${Date.now()}.png`;
+      link.href = canvasImage.toDataURL();
+      link.click();
+    } catch (error) {
+      console.error('İndirme hatası:', error);
+      alert('İndirme sırasında bir hata oluştu!');
+    }
+  };
+
+  return (
+    <div className="fade-in">
+      <h1 style={{ marginBottom: '1rem' }}>🎨 Kart Hazırla</h1>
+      <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem' }}>
+        Sürükle-bırak yöntemiyle Twitter için paylaşım kartı oluşturun.
+      </p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: '2rem' }}>
+        {/* Sol Panel - Veri Elementleri */}
+        <div>
+          <div className="stock-card" style={{ marginBottom: '1rem' }}>
+            <h3 style={{ marginBottom: '1rem' }}>📊 Hisse Seç</h3>
+            <select 
+              value={selectedStock}
+              onChange={(e) => setSelectedStock(e.target.value)}
+              style={{ 
+                width: '100%', 
+                padding: '10px', 
+                background: '#222', 
+                color: '#fff', 
+                border: '1px solid #444', 
+                borderRadius: '8px',
+                fontSize: '0.9rem'
+              }}
+            >
+              <option value="">Hisse seçiniz...</option>
+              {stocks.slice(0, 50).map(s => (
+                <option key={s.symbol} value={s.symbol}>{s.symbol} - {s.name}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="stock-card">
+            <h3 style={{ marginBottom: '1rem' }}>🧩 Veri Elementleri</h3>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+              Sürükleyerek canvas'a bırakın
+            </p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {availableData.map(item => (
+                <div
+                  key={item.id}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, item)}
+                  style={{
+                    padding: '10px 12px',
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    borderRadius: '8px',
+                    cursor: 'grab',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    fontSize: '0.85rem',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => e.target.style.background = 'rgba(0, 200, 5, 0.1)'}
+                  onMouseLeave={(e) => e.target.style.background = 'rgba(255,255,255,0.05)'}
+                >
+                  <span>{item.icon}</span>
+                  <span>{item.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Sağ Panel - Canvas */}
+        <div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <h3>🖼️ Kart Önizleme</h3>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <button 
+                onClick={clearCanvas}
+                style={{
+                  padding: '8px 16px',
+                  background: 'rgba(255, 77, 77, 0.2)',
+                  border: '1px solid rgba(255, 77, 77, 0.3)',
+                  color: '#ff4d4d',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  fontSize: '0.85rem'
+                }}
+              >
+                🗑️ Temizle
+              </button>
+              <button 
+                onClick={downloadCard}
+                className="login-btn"
+                style={{ width: 'auto', padding: '8px 20px', marginTop: 0 }}
+              >
+                📥 İndir
+              </button>
+            </div>
+          </div>
+
+          <div
+            ref={canvasRef}
+            onDrop={handleDrop}
+            onDragOver={handleDragOver}
+            style={{
+              minHeight: '500px',
+              background: 'linear-gradient(145deg, rgba(20,20,20,0.95), rgba(10,10,10,0.98))',
+              border: '2px dashed rgba(255,255,255,0.2)',
+              borderRadius: '16px',
+              padding: '2rem',
+              position: 'relative',
+              overflow: 'hidden'
+            }}
+          >
+            {canvasItems.length === 0 ? (
+              <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '100%',
+                color: 'var(--text-secondary)',
+                textAlign: 'center'
+              }}>
+                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎨</div>
+                <p>Sol panelden veri elementlerini sürükleyip buraya bırakın</p>
+                <p style={{ fontSize: '0.8rem', marginTop: '0.5rem' }}>Önce bir hisse seçmeyi unutmayın!</p>
+              </div>
+            ) : (
+              <div style={{ position: 'relative', minHeight: '450px' }}>
+                {/* Başlık */}
+                {selectedStock && (
+                  <div style={{
+                    textAlign: 'center',
+                    marginBottom: '2rem',
+                    paddingBottom: '1rem',
+                    borderBottom: '1px solid rgba(255,255,255,0.1)'
+                  }}>
+                    <h2 style={{ color: 'var(--accent-color)', fontSize: '2rem', margin: 0 }}>
+                      {selectedStock.replace('.IS', '')}
+                    </h2>
+                    <p style={{ color: 'var(--text-secondary)', margin: '5px 0 0 0', fontSize: '0.9rem' }}>
+                      {stockDetail?.name || ''}
+                    </p>
+                  </div>
+                )}
+
+                {/* Canvas Items */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                  {canvasItems.map(item => (
+                    <div
+                      key={item.canvasId}
+                      style={{
+                        padding: '15px',
+                        background: 'rgba(255,255,255,0.03)',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        borderRadius: '12px',
+                        position: 'relative'
+                      }}
+                    >
+                      <button
+                        onClick={() => removeItem(item.canvasId)}
+                        style={{
+                          position: 'absolute',
+                          top: '5px',
+                          right: '5px',
+                          background: 'rgba(255,77,77,0.3)',
+                          border: 'none',
+                          color: '#ff4d4d',
+                          width: '20px',
+                          height: '20px',
+                          borderRadius: '50%',
+                          cursor: 'pointer',
+                          fontSize: '0.7rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        ✕
+                      </button>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginBottom: '5px' }}>
+                        {item.icon} {item.label}
+                      </div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: 'bold' }}>
+                        {item.value}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Alt bilgi */}
+                <div style={{
+                  marginTop: '2rem',
+                  paddingTop: '1rem',
+                  borderTop: '1px solid rgba(255,255,255,0.1)',
+                  textAlign: 'center',
+                  fontSize: '0.7rem',
+                  color: 'var(--text-secondary)'
+                }}>
+                  PhD Terminal • {new Date().toLocaleDateString('tr-TR')}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }
 
