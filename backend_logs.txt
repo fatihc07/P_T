@@ -884,3 +884,18 @@ di.
 [2026-04-01 10:09:44] 🔄 15 hisse zenginleştiriliyor...
 [2026-04-01 10:09:44] ✅ 15 hisse hazırlandı.
 [2026-04-01 10:10:11] 🚀 Backend baslatildi.
+[2026-04-01 10:10:35] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-04-01 10:10:35] 🔄 15 hisse zenginleştiriliyor...
+[2026-04-01 10:10:36] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:12:45] 🚀 Backend baslatildi.
+[2026-04-01 10:12:53] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-04-01 10:12:53] 🔄 15 hisse zenginleştiriliyor...
+[2026-04-01 10:12:54] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:13:33] 🔍 ZERGY için detaylar istendi.
+[2026-04-01 10:13:33] 📊 ZERGY için mali tablolar istendi.
+[2026-04-01 10:13:33] ✅ ZERGY mali tabloları hazır.
+[2026-04-01 10:13:33] 📊 ZERGY için mali tablolar istendi.
+[2026-04-01 10:13:33] ✅ ZERGY mali tabloları hazır.
+[2026-04-01 10:13:34] ✅ ZERGY detayları gönderildi.
+[2026-04-01 10:13:34] 🔍 ZERGY için detaylar istendi.
+[2026-04-01 10:13:34] ✅ ZERGY detayları gönderildi.

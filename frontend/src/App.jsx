@@ -3,7 +3,9 @@ import { supabase } from './supabaseClient';
 import './index.css';
 
 const APP_VERSION = 'v1.0.3'; // HER GÜNCELLEMEDE ARTIR
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? "" : `http://${window.location.hostname}:8000`);
+const API_BASE_URL = (import.meta.env.VITE_API_URL && !import.meta.env.VITE_API_URL.includes('localhost')) 
+  ? import.meta.env.VITE_API_URL 
+  : (import.meta.env.PROD ? "" : `http://${window.location.hostname}:8000`);
 const ADMIN_EMAIL = 'admin@admin.com'; // Burayi kendi e-postanla degistirebilirsin
 
 function App() {
