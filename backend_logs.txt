@@ -899,3 +899,20 @@ di.
 [2026-04-01 10:13:34] ✅ ZERGY detayları gönderildi.
 [2026-04-01 10:13:34] 🔍 ZERGY için detaylar istendi.
 [2026-04-01 10:13:34] ✅ ZERGY detayları gönderildi.
+[2026-04-01 10:14:04] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-04-01 10:14:04] 🔄 15 hisse zenginleştiriliyor...
+[2026-04-01 10:14:04] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:14:30] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-04-01 10:14:30] 🔄 15 hisse zenginleştiriliyor...
+[2026-04-01 10:14:31] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:14:32] 🔍 ZGYO için detaylar istendi.
+[2026-04-01 10:14:32] 📊 ZGYO için mali tablolar istendi.
+[2026-04-01 10:14:32] ✅ ZGYO mali tabloları hazır.
+[2026-04-01 10:14:33] ✅ ZGYO detayları gönderildi.
+[2026-04-01 10:15:09] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-04-01 10:15:09] 🔄 15 hisse zenginleştiriliyor...
+[2026-04-01 10:15:09] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:15:10] 🔍 ZOREN için detaylar istendi.
+[2026-04-01 10:15:10] 📊 ZOREN için mali tablolar istendi.
+[2026-04-01 10:15:10] ✅ ZOREN mali tabloları hazır.
+[2026-04-01 10:15:11] ✅ ZOREN detayları gönderildi.
