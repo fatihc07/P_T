@@ -17,4 +17,4 @@ cmds = [
 ]
 
 [start]
-cmd = "python3 main.py"
+cmd = "cd backend && python3 main.py"

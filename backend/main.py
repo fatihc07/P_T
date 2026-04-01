@@ -65,7 +65,7 @@ app = FastAPI(title="Hisse PhD API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*", "https://meek-madeleine-0b2e8d.netlify.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -577,3 +577,8 @@ if os.path.exists(frontend_path):
         return FileResponse(os.path.join(frontend_path, "index.html"))
 else:
     print(f"⚠️ UYARI: Frontend built klasörü ({frontend_path}) bulunamadı!")
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run(app, host="0.0.0.0", port=port)
