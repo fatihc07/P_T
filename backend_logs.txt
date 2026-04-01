@@ -868,3 +868,19 @@ di.
 [2026-04-01 10:05:27] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
 [2026-04-01 10:05:27] 🔄 15 hisse zenginleştiriliyor...
 [2026-04-01 10:05:29] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:07:45] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-04-01 10:07:45] 🔄 15 hisse zenginleştiriliyor...
+[2026-04-01 10:07:45] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:07:48] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-04-01 10:07:48] 🔄 15 hisse zenginleştiriliyor...
+[2026-04-01 10:07:48] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:08:13] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-04-01 10:08:13] 🔄 15 hisse zenginleştiriliyor...
+[2026-04-01 10:08:14] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:09:37] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-04-01 10:09:37] 🔄 15 hisse zenginleştiriliyor...
+[2026-04-01 10:09:38] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:09:44] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-04-01 10:09:44] 🔄 15 hisse zenginleştiriliyor...
+[2026-04-01 10:09:44] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:10:11] 🚀 Backend baslatildi.
