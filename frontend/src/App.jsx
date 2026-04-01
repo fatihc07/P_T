@@ -452,7 +452,7 @@ function App() {
       <div className="login-container">
         <div className="login-box">
           <div className="logo" style={{ textAlign: 'center', marginBottom: '2rem', letterSpacing: '0px' }}>
-            Hisse PhD
+            PHD Terminal
             <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem', fontWeight: 'normal' }}>{APP_VERSION}</div>
           </div>
           <form onSubmit={authMode === 'login' ? handleLogin : handleSignUp}>
@@ -2587,7 +2587,7 @@ function CardBuilder({ stocks }) {
                       marginBottom: '0.5rem',
                       letterSpacing: '2px'
                     }}>
-                      BIST • Hisse PhD
+                      BIST • PHD Terminal
                     </div>
                     <h2 style={{ 
                       color: cardStyle === 'light' ? '#000' : 'var(--accent-color)', 
@@ -2705,7 +2705,7 @@ function CardBuilder({ stocks }) {
                     fontSize: '0.7rem',
                     color: cardStyle === 'light' ? '#888' : 'var(--text-secondary)'
                   }}>
-                    📱 Hisse PhD • {new Date().toLocaleDateString('tr-TR')} • hissephd.com
+                    📱 PHD Terminal • {new Date().toLocaleDateString('tr-TR')} • phdterminal.com
                   </div>
                 </div>
               )}

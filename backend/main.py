@@ -61,7 +61,7 @@ except ImportError:
         get_sector_group
     )
 
-app = FastAPI(title="Hisse PhD API")
+app = FastAPI(title="PHD Terminal API")
 
 app.add_middleware(
     CORSMiddleware,
