@@ -856,3 +856,11 @@ di.
 [2026-03-26 11:31:39] ✅ ZOREN detayları gönderildi.
 [2026-03-26 11:31:39] 🔍 ZOREN için detaylar istendi.
 [2026-03-26 11:31:39] ✅ ZOREN detayları gönderildi.
+[2026-03-31 15:19:12] 🚀 Backend baslatildi.
+[2026-03-31 15:28:40] 🚀 Backend baslatildi.
+[2026-03-31 15:28:48] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-31 15:28:48] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-31 15:28:51] ✅ 15 hisse hazırlandı.
+[2026-03-31 15:29:00] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
+[2026-03-31 15:29:00] 🔄 15 hisse zenginleştiriliyor...
+[2026-03-31 15:29:00] ✅ 15 hisse hazırlandı.
