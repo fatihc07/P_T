@@ -23,18 +23,21 @@ try:
 except ImportError:
     isy_fetch = None
 
-from supabase import create_client
+try:
+    from supabase import create_client
+    # Supabase Ayarları
+    SUPABASE_URL = os.getenv("SUPABASE_URL", "")
+    SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")
 
-# Supabase Ayarları
-SUPABASE_URL = os.getenv("SUPABASE_URL", "")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")
-
-supabase = None
-if SUPABASE_URL and SUPABASE_KEY:
-    try:
-        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-    except Exception as e:
-        print(f"Supabase Client Hatası: {e}")
+    supabase = None
+    if SUPABASE_URL and SUPABASE_KEY:
+        try:
+            supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+        except Exception as e:
+            print(f"Supabase Client Hatası: {e}")
+except ImportError:
+    supabase = None
+    print("⚠️ Supabase kütüphanesi yüklü değil, yerel önbellek kullanılacak.")
 
 DATA_DIR = os.getenv("DATA_DIR", os.path.join(os.path.dirname(__file__), "data"))
 if not os.path.exists(DATA_DIR):
