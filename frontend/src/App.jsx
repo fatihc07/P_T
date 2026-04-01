@@ -450,7 +450,7 @@ function App() {
       <div className="login-container">
         <div className="login-box">
           <div className="logo" style={{ textAlign: 'center', marginBottom: '2rem', letterSpacing: '0px' }}>
-            PhD TERMİNAL
+            Hisse PhD
             <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginTop: '0.5rem', fontWeight: 'normal' }}>{APP_VERSION}</div>
           </div>
           <form onSubmit={authMode === 'login' ? handleLogin : handleSignUp}>
@@ -506,7 +506,7 @@ function App() {
           {isSidebarCollapsed ? '>' : '<'}
         </button>
         <div className="logo" style={{ letterSpacing: '0px', whiteSpace: 'nowrap' }}>
-          PhD {!isSidebarCollapsed && 'TERMİNAL'}
+          Hisse {!isSidebarCollapsed && 'PhD'}
           <div style={{ fontSize: '0.7rem', color: 'var(--accent-color)', marginTop: '0.2rem', fontWeight: 'normal' }}>{APP_VERSION}</div>
         </div>
         <nav>
@@ -2585,7 +2585,7 @@ function CardBuilder({ stocks }) {
                       marginBottom: '0.5rem',
                       letterSpacing: '2px'
                     }}>
-                      BIST • PHD TERMİNAL
+                      BIST • Hisse PhD
                     </div>
                     <h2 style={{ 
                       color: cardStyle === 'light' ? '#000' : 'var(--accent-color)', 
@@ -2703,7 +2703,7 @@ function CardBuilder({ stocks }) {
                     fontSize: '0.7rem',
                     color: cardStyle === 'light' ? '#888' : 'var(--text-secondary)'
                   }}>
-                    📱 PhD Terminal • {new Date().toLocaleDateString('tr-TR')} • phdterminal.com
+                    📱 Hisse PhD • {new Date().toLocaleDateString('tr-TR')} • hissephd.com
                   </div>
                 </div>
               )}
