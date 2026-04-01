@@ -257,7 +257,7 @@ function App() {
       
       try {
         const symbolsParam = '';
-        const limit = 15;
+        const limit = 40;
         const response = await fetch(`${API_BASE_URL}/stocks?page=${page}&limit=${limit}${symbolsParam}`);
         const result = await response.json();
         
@@ -299,7 +299,7 @@ function App() {
            setPage(prev => prev + 1);
         }
       },
-      { threshold: 1.0 }
+      { threshold: 0.1 }
     );
 
     if (observerTarget.current) {
