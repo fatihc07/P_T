@@ -1,5 +1,5 @@
 @echo off
-TITLE PhD Terminal - Canliya Gonderiliyor (GITHUB)
+TITLE Hisse PhD - Canliya Gonderiliyor (GITHUB)
 echo.
 echo  =========================================
 echo    DEGISIKLIKLER CANLIYA GONDERILIYOR...

@@ -6,7 +6,7 @@ import webbrowser
 
 def start_services():
     print("\n" + "="*45)
-    print("      PhD TERMİNAL - AKILLI BAŞLATICI")
+    print("      Hisse PhD - AKILLI BAŞLATICI")
     print("="*45 + "\n")
 
     try:
@@ -37,7 +37,7 @@ def start_services():
         webbrowser.open("http://localhost:3000")
 
         print("\n" + "-"*45)
-        print("✅ BAŞARILI! PhD Terminal şu an çalışıyor.")
+        print("✅ BAŞARILI! Hisse PhD şu an çalışıyor.")
         print("🔗 Frontend:  http://localhost:3000")
         print("🔗 API:       http://localhost:8000")
         print("-"*45 + "\n")

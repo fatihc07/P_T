@@ -1,8 +1,8 @@
 @echo off
-TITLE PhD Terminal - YEREL CALISTIRICI
+TITLE Hisse PhD - YEREL CALISTIRICI
 echo.
 echo  =========================================
-echo    PHD TERMINAL YERELDE BASLATILIYOR...
+echo    HISSE PHD YERELDE BASLATILIYOR...
 echo  =========================================
 echo.
 

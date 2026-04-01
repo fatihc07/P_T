@@ -14,5 +14,9 @@
   "mustafa@pd.com.tr": {
     "password": "111111",
     "role": "user"
+  },
+  "mustafa_16": {
+    "password": "musti_1616",
+    "role": "user"
   }
 }
