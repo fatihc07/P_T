@@ -65,7 +65,13 @@ app = FastAPI(title="Hisse PhD API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*", "https://meek-madeleine-0b2e8d.netlify.app"],
+    allow_origins=[
+        "https://hisse-phd.netlify.app",
+        "https://meek-madeleine-0b2e8d.netlify.app",
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:8000"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
