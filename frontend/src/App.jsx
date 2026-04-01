@@ -1520,7 +1520,7 @@ function StockDetailView({ symbol, onBack, toggleFavorite, isFavorite }) {
                                   onClick={() => setChartMode('local')}
                                   style={{ padding: '5px 15px', fontSize: '0.8rem' }}
                               >
-                                  PhD Analiz
+                                  PHD Analiz
                               </button>
                               <button 
                                   className={chartMode === 'tv' ? 'active' : ''} 
