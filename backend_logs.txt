@@ -864,3 +864,4 @@ di.
 [2026-03-31 15:29:00] 📋 Hisse listesi istendi (Sayfa: 1, Limit: 15)
 [2026-03-31 15:29:00] 🔄 15 hisse zenginleştiriliyor...
 [2026-03-31 15:29:00] ✅ 15 hisse hazırlandı.
+[2026-04-01 10:04:42] 🚀 Backend baslatildi.
