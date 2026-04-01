@@ -35,7 +35,6 @@ Thumbs.db
 backend.log
 backend/financial_cache.json
 backend/stock_details_cache.json
-backend/sectors.json
 backend/users.json
 venv/
 .env
