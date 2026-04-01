@@ -23,6 +23,19 @@ try:
 except ImportError:
     isy_fetch = None
 
+from supabase import create_client
+
+# Supabase Ayarları
+SUPABASE_URL = os.getenv("SUPABASE_URL", "")
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "")
+
+supabase = None
+if SUPABASE_URL and SUPABASE_KEY:
+    try:
+        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+    except Exception as e:
+        print(f"Supabase Client Hatası: {e}")
+
 DATA_DIR = os.getenv("DATA_DIR", os.path.join(os.path.dirname(__file__), "data"))
 if not os.path.exists(DATA_DIR):
     os.makedirs(DATA_DIR, exist_ok=True)
@@ -204,23 +217,33 @@ def get_stock_details(symbol):
         "index_code": "-"
     }
     
-    # Cache kontrolü - 24 saat geçerli
+    # 1. Aşama: Bellekteki (Local) Cache Kontrolü
     cache_key = f"{clean_symbol}_details"
     if cache_key in STOCK_CACHE:
         cached = STOCK_CACHE[cache_key]
         try:
             last_updated = datetime.fromisoformat(cached.get("last_updated", "2000-01-01"))
-            time_diff = datetime.now() - last_updated
-            # Saat cinsinden farkı kontrol et
-            if time_diff.total_seconds() / 3600 < 24:
-                print(f"✅ {clean_symbol} detayları cache'den döndürüldü")
-                # Eksik alanları varsayılan değerlerle doldur
-                for key in default_result:
-                    if key not in cached:
-                        cached[key] = default_result[key]
+            # 1 saatten yeniyse direkt döndür
+            if (datetime.now() - last_updated).total_seconds() / 3600 < 1:
                 return cached
+        except: pass
+
+    # 2. Aşama: Veritabanındaki (Supabase) Cache Kontrolü
+    if supabase:
+        try:
+            res = supabase.table("stock_cache").select("*").eq("symbol", clean_symbol).execute()
+            if res.data and len(res.data) > 0:
+                db_cached = res.data[0]
+                last_updated = datetime.fromisoformat(db_cached.get("updated_at", "2000-01-01").replace('Z', '+00:00'))
+                # Veritabanındaki veri 24 saatten yeniyse kullan
+                if (datetime.now(last_updated.tzinfo) - last_updated).total_seconds() / 3600 < 24:
+                    print(f"✅ {clean_symbol} veritabanından (Supabase) çekildi")
+                    data = db_cached.get("data", {})
+                    # Local cache'e de atalım
+                    STOCK_CACHE[cache_key] = data
+                    return data
         except Exception as e:
-            print(f"⚠️ Cache okuma hatası: {e}")
+            print(f"⚠️ Supabase Cache okuma hatası: {e}")
     
     try:
         yf_symbol = symbol if symbol.endswith(".IS") else f"{symbol}.IS"
@@ -351,9 +374,22 @@ def get_stock_details(symbol):
             "index_code": index_code
         }
         
-        # Cache'e kaydet
+        # 3. Aşama: Cache'e kaydet (Hem Yerel Hem Supabase)
         STOCK_CACHE[cache_key] = result
         save_stock_cache(STOCK_CACHE)
+        
+        if supabase:
+            try:
+                # Veritabanına kaydet veya güncelle (Upsert)
+                supabase.table("stock_cache").upsert({
+                    "symbol": clean_symbol,
+                    "data": result,
+                    "updated_at": datetime.now().isoformat()
+                }).execute()
+                print(f"📡 {clean_symbol} veritabanına (Supabase) yedeklendi")
+            except Exception as e:
+                print(f"⚠️ Supabase Kayıt Hatası: {e}")
+
         print(f"✅ {clean_symbol} detayları çekildi ve cache'e kaydedildi")
         
         return result
