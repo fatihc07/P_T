@@ -563,15 +563,16 @@ if os.path.exists(frontend_path):
 
     @app.get("/{full_path:path}")
     async def catch_all(full_path: str):
-        # API ise 404 dön ki FastAPI yakalasın
-        if full_path.startswith("stocks") or full_path.startswith("login"):
+        # API yollarını hariç tut (Bu yollar SPA rotası değil, gerçek API endpointleridir)
+        api_paths = ["stocks", "login", "search", "admin", "ipo", "heartbeat", "assets"]
+        if any(full_path.startswith(p) for p in api_paths):
             raise HTTPException(status_code=404)
-        
+            
         # Dosya varsa onu ver
         local_file = os.path.join(frontend_path, full_path)
         if os.path.exists(local_file) and os.path.isfile(local_file):
             return FileResponse(local_file)
-            
+                
         # Yoksa SPA router için index.html ver
         return FileResponse(os.path.join(frontend_path, "index.html"))
 else:
